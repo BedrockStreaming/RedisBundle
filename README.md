@@ -79,4 +79,6 @@ TODO
 
 ## Launch Unit Tests
 
-```./vendor/bin/atoum```
+```shell
+./vendor/bin/atoum
+```
