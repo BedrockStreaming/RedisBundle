@@ -1,0 +1,23 @@
+{
+    "name": "m6web/redis-bundle",
+    "type": "symfony-bundle",
+    "description" : "bundle sf2 on top of m6web/redis-component",
+    "authors": [
+        {
+            "name": "Olivier Mansour",
+            "email": "olivier.mansour@m6.fr"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "m6web/redis-component": "@stable"
+    },
+    "require-dev": {
+        "atoum/atoum":      "master-dev",
+        "m6web/redis-mock": "dev-feature/common-getMock-method"
+    },
+    "autoload": {
+        "psr-0": { "": "src/" }
+    },
+    "minimum-stability" : "dev"
+}
