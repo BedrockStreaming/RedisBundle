@@ -1,10 +1,9 @@
 <?php
-/**
- * @author o_mansour
- */
+
 namespace M6Web\Bundle\RedisBundle\Redis;
+
 /**
- * simple surcharge de l'exception de php
+ * regular exception in the namespace
  */
 class Exception extends \Exception
 {

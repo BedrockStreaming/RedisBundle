@@ -6,6 +6,7 @@ use M6Web\Component\Redis\Cache;
 
 /**
  * Class Redis
+ * client class over the Cache component
  *
  * @package M6Web\Bundle\RedisBundle\Redis
  */
