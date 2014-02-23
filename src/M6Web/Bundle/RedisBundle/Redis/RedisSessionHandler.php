@@ -2,7 +2,7 @@
 namespace M6Web\Bundle\RedisBundle\Redis;
 
 /**
- * handler de session sf2 utilisant Redis
+ * session handler
  */
 class RedisSessionHandler implements \SessionHandlerInterface
 {
