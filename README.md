@@ -18,7 +18,7 @@ see [m6web/redis-component](https://github.com/M6Web/Redis)
 
 ### configuration
 
-in ```config.yml``` for a simple cache service
+in ```config.yml``` for a simple cache service :
 
 ```
 m6_redis:
@@ -34,7 +34,7 @@ m6_redis:
             timeout:   2               # timeout in second
 ```
 
-for a multiple clients
+for a multiple clients :
 
 ```
 m6_redis:
@@ -57,9 +57,26 @@ m6_redis:
 
 ```$this->get('m6redis')``` send the default client. ```this->get('m6redis.sharded')``` the sharded one.
 
+for a direct access to the predis object (without consistant hashing) (```servers``` section remains the same) :
+
+```
+m6_redis:
+    clients:
+        default:
+            servers: ["first"]
+            type: ["db"]
+            timeout: 0.5
+        longclient:
+            servers: ["first"]
+            type: ["db"]
+            timeout: 4
+```
+
+```$this->get('m6_dbredis')``` send the default client. ```$this->get('m6_dbredis.longclient)``` the other one. Thoses servers can't have more than one server configured.
+
 ### event dispatcher
 
-TODO
+The event ```M6Web\Bundle\RedisBundle\EventDispatcher``` is automaticly dispatched to the redis component. Events are fired with the ```redis.command``` label.
 
 ### session handler
 
@@ -71,7 +88,7 @@ TODO
 
 ### dataCollector
 
-TODO
+TODO - pics
 
 ### cacheResetter
 
