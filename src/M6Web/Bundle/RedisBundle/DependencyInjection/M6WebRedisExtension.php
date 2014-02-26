@@ -75,6 +75,10 @@ class M6WebRedisExtension extends Extension
             }
         }
 
+        if (count($configuration['server_config']) == 0) {
+            throw new InvalidConfigurationException(sprintf("no server configured for %s client", $alias));
+        }
+
         $redis = new Cache($configuration);
 
         $serviceId  = ($alias == 'default') ? 'm6_redis' : 'm6_redis.'.$alias;
@@ -119,6 +123,10 @@ class M6WebRedisExtension extends Extension
                 $serverConfig = $servers[$serverAlias];
                 $configuration['server_config'][$serverAlias] = array('ip' => $serverConfig['ip'], 'port' => $serverConfig['port']);
             }
+        }
+
+        if (count($configuration['server_config']) != 1) {
+            throw new InvalidConfigurationException(sprintf("M6Redis client %s used is a db client and can't have %s server configured", $alias, count($configuration['server_config'])));
         }
 
         $serviceId  = ($alias == 'default') ? 'm6_dbredis' : 'm6_dbredis.'.$alias;
