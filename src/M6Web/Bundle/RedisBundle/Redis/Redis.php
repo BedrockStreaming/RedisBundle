@@ -78,7 +78,7 @@ class Redis
     public function get($key)
     {
         // should we refresh the cache ?
-        if (($this->cacheResetter && $this->cacheResetter->shouldResetCache())) {
+        if (($this->shouldResetCache())) {
             $this->remove($key);
 
             return false;
@@ -99,7 +99,7 @@ class Redis
         $exists = $this->redis->exists($key);
 
         // If the key exists and we must refresh the cache, then we remove the key and return false
-        if ($exists && ($this->cacheResetter && $this->cacheResetter->shouldResetCache())) {
+        if ($exists && ($this->shouldResetCache())) {
             $this->remove($key);
 
             return false;
@@ -145,6 +145,18 @@ class Redis
     public function getCacheResetter()
     {
         return $this->cacheResetter;
+    }
+
+    /**
+     * @return bool
+     */
+    public function shouldResetCache()
+    {
+        if ($this->cacheResetter) {
+            return $this->cacheResetter->shouldResetCache();
+        }
+
+        return false;
     }
 
 }
