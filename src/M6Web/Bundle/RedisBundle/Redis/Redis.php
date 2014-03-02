@@ -61,7 +61,7 @@ class Redis
      *
      * @return $this
      */
-    public function setCacheResetterService(CacheResetterInterface $cacheResetterService)
+    public function setCacheResetter(CacheResetterInterface $cacheResetterService)
     {
         $this->cacheResetterService = $cacheResetterService;
 

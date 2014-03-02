@@ -94,7 +94,7 @@ class M6WebRedisExtension extends Extension
 
 
         if (array_key_exists('cache_resetter', $config)) {
-            $definition->addMethodCall('setCacheResetterService', array(new Reference($config['cache_resetter'])));
+            $definition->addMethodCall('setCacheResetter', array(new Reference($config['cache_resetter'])));
         }
         $container->setDefinition($serviceId, $definition);
     }

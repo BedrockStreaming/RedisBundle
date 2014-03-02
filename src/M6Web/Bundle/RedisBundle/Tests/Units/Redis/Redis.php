@@ -87,7 +87,7 @@ class Redis extends atoum\test
             ->string($redis->get('foo'))
             ->isIdenticalTo('bar');
 
-        $this->if($redis->setCacheResetterService($cacheResetter))
+        $this->if($redis->setCacheResetter($cacheResetter))
             ->then
             ->string($redis->get('foo'))
             ->isIdenticalTo('bar');
@@ -97,7 +97,7 @@ class Redis extends atoum\test
             return true;
         };
 
-        $this->if($redis->setCacheResetterService($cacheResetter))
+        $this->if($redis->setCacheResetter($cacheResetter))
             ->then
             ->string($redis->getRedis()->get('foo')) // foo key is here
             ->boolean($redis->get('foo'))
