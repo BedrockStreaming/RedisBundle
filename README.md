@@ -91,7 +91,7 @@ see http://guzzle.readthedocs.org/en/latest/plugins/cache-plugin.html
 $ttl         = 20; // 20s ttl - override the ttl guessed by cache-control: max-age
 $adapter     = new M6\Bundle\RedisBundle\Guzzle\RedisCacheAdapter($this->get('m6redis'), $ttl);
 $cachePlugin = new \Guzzle\Plugin\Cache\CachePlugin($adapter);
-$this->get('m6_dbredis')->addSubscriber($cache);
+$guzzleHttpClient->addSubscriber(shouldResetCache);
 ```
 
 ### dataCollector
