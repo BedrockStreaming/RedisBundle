@@ -34,10 +34,11 @@ class Redis extends atoum\test
     protected function getRedisInstance()
     {
         $factory     = new RedisMockFactory();
-        $myRedisMockClass = $factory->getMock('M6Web\Component\Redis\Cache', false, [
-                'orphanizeConstructor' => true,
-                'failOnlyAtRuntime' => true
-            ]);
+        $myRedisMockClass = $factory->getAdapterClass('M6Web\Component\Redis\Cache', true, true);
+//        $myRedisMockClass = $factory->getMock('M6Web\Component\Redis\Cache', false, [
+//                'orphanizeConstructor' => true,
+//                'failOnlyAtRuntime' => true
+//            ]);
         $myRedisMock = new $myRedisMockClass(static::$params, true);
         $redis = new BaseRedis($myRedisMock);
 

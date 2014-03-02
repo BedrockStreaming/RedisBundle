@@ -36,10 +36,7 @@ class RedisSessionHandler extends atoum
                 )
             );
         $factory     = new RedisMockFactory();
-        $myRedisMockClass = $factory->getMock('M6Web\Component\Redis\Cache', false, [
-                'orphanizeConstructor' => true,
-                'failOnlyAtRuntime' => true
-            ]);
+        $myRedisMockClass = $factory->getAdapterClass('M6Web\Component\Redis\Cache', true, true);
         $myRedisMock = new $myRedisMockClass($params, true);
         $redis = new BaseRedis($myRedisMock);
 
