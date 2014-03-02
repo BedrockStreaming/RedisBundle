@@ -17,7 +17,7 @@ class Redis
      */
     protected $redis = null;
 
-    protected $cacheResetterService  = null;
+    protected $cacheResetter = null;
 
     /**
      * constructeur
@@ -57,13 +57,13 @@ class Redis
     /**
      * Set the cache reset service to use
      *
-     * @param CacheResetterInterface $cacheResetterService
+     * @param CacheResetterInterface $cacheResetter
      *
      * @return $this
      */
-    public function setCacheResetter(CacheResetterInterface $cacheResetterService)
+    public function setCacheResetter(CacheResetterInterface $cacheResetter)
     {
-        $this->cacheResetterService = $cacheResetterService;
+        $this->cacheResetter = $cacheResetter;
 
         return $this;
     }
@@ -78,7 +78,7 @@ class Redis
     public function get($key)
     {
         // should we refresh the cache ?
-        if (($this->cacheResetterService && $this->cacheResetterService->shouldResetCache())) {
+        if (($this->cacheResetter && $this->cacheResetter->shouldResetCache())) {
             $this->remove($key);
 
             return false;
@@ -99,7 +99,7 @@ class Redis
         $exists = $this->redis->exists($key);
 
         // If the key exists and we must refresh the cache, then we remove the key and return false
-        if ($exists && ($this->cacheResetterService && $this->cacheResetterService->shouldResetCache())) {
+        if ($exists && ($this->cacheResetter && $this->cacheResetter->shouldResetCache())) {
             $this->remove($key);
 
             return false;
@@ -137,6 +137,14 @@ class Redis
         } else {
             throw new Exception('Redis object is null !');
         }
+    }
+
+    /**
+     * @return null
+     */
+    public function getCacheResetter()
+    {
+        return $this->cacheResetter;
     }
 
 }
