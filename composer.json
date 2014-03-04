@@ -16,6 +16,9 @@
         "atoum/atoum":      "master-dev",
         "m6web/redis-mock": "dev-feature/common-getMock-method"
     },
+    "suggest": {
+      "m6web/wsclient-bundle": "@stable"
+    },
     "autoload": {
         "psr-0": { "": "src/" }
     },
