@@ -14,7 +14,7 @@
     },
     "require-dev": {
         "atoum/atoum":      "master-dev",
-        "m6web/redis-mock": "dev-feature/common-getMock-method"
+        "m6web/redis-mock": "@stable"
     },
     "suggest": {
       "m6web/wsclient-bundle": "@stable"
