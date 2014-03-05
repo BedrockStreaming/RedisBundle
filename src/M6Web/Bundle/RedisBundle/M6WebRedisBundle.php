@@ -17,6 +17,6 @@ class M6WebRedisBundle extends Bundle
      */
     public function getContainerExtension()
     {
-        return new DependencyInjection\M6WebRedisdExtension();
+        return new DependencyInjection\M6WebRedisExtension();
     }
 }

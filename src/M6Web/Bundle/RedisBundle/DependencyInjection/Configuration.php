@@ -91,6 +91,7 @@ class Configuration implements ConfigurationInterface
                             //->scalarNode('ttl_lock')->defaultValue(10)->end()
                             //->scalarNode('ttl_key_value_multiplier')->defaultValue(3)->end()
                             ->scalarNode('cache_resetter')->end()
+                            ->scalarNode('class')->defaultValue('M6Web\Bundle\RedisBundle\Redis\Redis')->end()
                         ->end()
                     ->end()
                 ->end()
