@@ -79,15 +79,16 @@ class M6WebRedisExtension extends Extension
             throw new InvalidConfigurationException(sprintf("no server configured for %s client", $alias));
         }
 
+        $redisCacheId = sprintf('m6_redis.cache.%s', $alias);
         $container
-            ->register('m6_redis_cache', 'M6Web\Component\Redis\Cache')
+            ->register($redisCacheId, 'M6Web\Component\Redis\Cache')
             ->addArgument($configuration);
 
         $serviceId  = ($alias == 'default') ? 'm6_redis' : 'm6_redis.'.$alias;
         $definition = new Definition($config['class']);
 
         $definition->setScope(ContainerInterface::SCOPE_CONTAINER);
-        $definition->addArgument(new Reference('m6_redis_cache'));
+        $definition->addArgument(new Reference($redisCacheId));
         $definition->addMethodCall('setEventDispatcher', array(new Reference('event_dispatcher'), 'M6Web\Bundle\RedisBundle\EventDispatcher\RedisEvent'));
         /*$definition->addMethodCall('setConcurrentMax', array($config['concurrent_max']));
         $definition->addMethodCall('setTtlKeyValueMultiplier', array($config['ttl_key_value_multiplier']));
