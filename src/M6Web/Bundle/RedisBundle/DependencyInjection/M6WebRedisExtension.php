@@ -69,7 +69,7 @@ class M6WebRedisExtension extends Extension
         $serverToAdd = array();
         foreach ($config['servers'] as $serverAlias) {
             if (false !== strpos($serverAlias, '*')) { // wildcard detected
-                $pattern = str_replace('*', '(\w+)', $serverAlias);
+                $pattern = '/'.str_replace('*', '(\w+)', $serverAlias).'/';
                 // search concrete servers
                 $serverFound = 0;
                 foreach ($servers as $serverName => $server) {
