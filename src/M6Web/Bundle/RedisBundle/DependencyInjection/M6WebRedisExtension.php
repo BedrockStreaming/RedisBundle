@@ -66,11 +66,32 @@ class M6WebRedisExtension extends Extension
             throw new InvalidConfigurationException("namespace Parameter for M6Redis server is required");
         }
 
+        $serverToAdd = array();
         foreach ($config['servers'] as $serverAlias) {
-            if (!isset($servers[$serverAlias])) {
-                throw new InvalidConfigurationException("M6Redis client $alias used server $serverAlias which is not defined in the servers section");
-            } else {
-                $configuration['server_config'][$serverAlias] = array('ip' => $servers[$serverAlias]['ip'], 'port' => $servers[$serverAlias]['port']);
+            if (false !== strpos($serverAlias, '*')) { // wildcard detected
+                $pattern = str_replace('*', '(\w+)', $serverAlias);
+                // search concrete servers
+                $serverFound = 0;
+                foreach ($servers as $serverName => $server) {
+                    if (preg_match($pattern, $serverName, $matches)) { // serverName match the wildcard
+                        $serverToAdd[$serverName] = $server;
+                        $serverFound++;
+                    }
+                }
+                if (0 === $serverFound) { // no server found
+                    throw new InvalidConfigurationException("M6Redis client $alias used server $serverAlias which doesnt match to any servers");
+                }
+            } else { // concrete server
+                if (!isset($servers[$serverAlias])) {
+                    throw new InvalidConfigurationException("M6Redis client $alias used server $serverAlias which is not defined in the servers section");
+                } else {
+                    $serverToAdd[$serverAlias] = $servers[$serverAlias];
+                }
+            }
+
+            foreach ($serverToAdd as $serverName => $server)
+            {
+                $configuration['server_config'][$serverName] = array('ip' => $server['ip'], 'port' => $server['port']);
             }
         }
 
