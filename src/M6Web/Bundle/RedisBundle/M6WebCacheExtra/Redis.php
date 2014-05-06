@@ -12,7 +12,7 @@ class Redis extends BaseRedis implements CacheInterface
      */
     public function set($key, $value, $ttl = null)
     {
-        return $this->redis->set($key, $value, $ttl = null);
+        return $this->redis->set($key, $value, $ttl);
     }
 
     /**
