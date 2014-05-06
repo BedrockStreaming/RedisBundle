@@ -58,7 +58,7 @@ class RedisCacheAdapter extends Cache\AbstractCacheAdapter
      */
     public function save($id, $data, $lifeTime = false, array $options = null)
     {
-        if (is_int($lifeTime) && $lifeTime < 0) {
+        if ((is_int($lifeTime) && $lifeTime < 0) or (!$lifeTime)) {
             $lifeTime = $this->ttl;
         }
 
