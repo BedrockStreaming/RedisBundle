@@ -6,7 +6,7 @@ use M6Web\Bundle\AwsBundle\Cache\CacheInterface;
 use M6Web\Bundle\RedisBundle\Redis\Redis as BaseRedis;
 
 /**
- * Redis adapter for M6WebWsClient
+ * Redis adapter for M6WebAwsBundle
  */
 class Redis extends BaseRedis implements CacheInterface
 {
