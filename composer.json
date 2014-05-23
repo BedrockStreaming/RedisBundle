@@ -17,7 +17,8 @@
         "m6web/redis-mock": "@stable"
     },
     "suggest": {
-      "m6web/wsclient-bundle": "@stable"
+      "m6web/wsclient-bundle": "@stable",
+      "m6web/aws-bundle":      "@stable"
     },
     "autoload": {
         "psr-0": { "": "src/" }
