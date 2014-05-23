@@ -10,14 +10,15 @@
     ],
     "require": {
         "php": ">=5.4",
-        "m6web/redis-component": "@stable"
+        "m6web/redis-component": "1.0.1"
     },
     "require-dev": {
         "atoum/atoum":      "master-dev",
         "m6web/redis-mock": "@stable"
     },
     "suggest": {
-      "m6web/wsclient-bundle": "@stable"
+      "m6web/wsclient-bundle": "@stable",
+      "m6web/aws-bundle":      "@stable"
     },
     "autoload": {
         "psr-0": { "": "src/" }

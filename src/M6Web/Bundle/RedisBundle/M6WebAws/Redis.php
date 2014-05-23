@@ -1,14 +1,12 @@
 <?php
 
-namespace M6Web\Bundle\RedisBundle\M6WebCacheExtra;
+namespace M6Web\Bundle\RedisBundle\M6WebAws;
 
-use M6Web\Component\CacheExtra\CacheInterface;
+use M6Web\Bundle\AwsBundle\Cache\CacheInterface;
 use M6Web\Bundle\RedisBundle\Redis\Redis as BaseRedis;
 
 /**
- * Redis client implementing CacheInterface of CacheExtra Bundle
- *
- * @package M6Web\Bundle\RedisBundle\M6WebCacheExtra
+ * Redis adapter for M6WebAwsBundle
  */
 class Redis extends BaseRedis implements CacheInterface
 {
