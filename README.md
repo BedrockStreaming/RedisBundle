@@ -74,6 +74,24 @@ m6_redis:
 
 ```$this->get('m6_dbredis')``` send the default client. ```$this->get('m6_dbredis.longclient)``` the other one. Thoses servers can't have more than one server configured.
 
+### server configuration via wildcard
+
+```
+m6_redis:
+    servers:
+        server1:
+            ip:   'localhost'
+            port: 6379
+        server2:
+            ip:   'xxxxxxxx'
+    clients:
+        default:
+            servers:   ["server*"]     # all servers matching server*
+            namespace: raoul\
+            timeout:   2
+```
+
+
 ### event dispatcher
 
 The event ```M6Web\Bundle\RedisBundle\EventDispatcher``` is automaticly dispatched to the redis component. Events are fired with the ```redis.command``` label.

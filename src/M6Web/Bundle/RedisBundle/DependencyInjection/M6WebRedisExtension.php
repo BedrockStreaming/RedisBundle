@@ -66,12 +66,33 @@ class M6WebRedisExtension extends Extension
             throw new InvalidConfigurationException("namespace Parameter for M6Redis server is required");
         }
 
+        $serverToAdd = array();
         foreach ($config['servers'] as $serverAlias) {
-            if (!isset($servers[$serverAlias])) {
-                throw new InvalidConfigurationException("M6Redis client $alias used server $serverAlias which is not defined in the servers section");
+            // wildcard detected
+            if ((false !== strpos($serverAlias, '*')) or (false !== strpos($serverAlias, '?'))) {
+                $serverFound = 0;
+                foreach ($servers as $serverName => $server) {
+                    // serverName match the wildcard
+                    if (fnmatch($serverAlias, $serverName)) {
+                        $serverToAdd[$serverName] = $server;
+                        $serverFound++;
+                    }
+                }
+                // no server found
+                if (0 === $serverFound) {
+                    throw new InvalidConfigurationException("M6Redis client $alias used server $serverAlias which doesnt match to any servers");
+                }
+            // concrete server
             } else {
-                $serverConfig = $servers[$serverAlias];
-                $configuration['server_config'][$serverAlias] = array('ip' => $serverConfig['ip'], 'port' => $serverConfig['port']);
+                if (!isset($servers[$serverAlias])) {
+                    throw new InvalidConfigurationException("M6Redis client $alias used server $serverAlias which is not defined in the servers section");
+                } else {
+                    $serverToAdd[$serverAlias] = $servers[$serverAlias];
+                }
+            }
+
+            foreach ($serverToAdd as $serverName => $server) {
+                $configuration['server_config'][$serverName] = array('ip' => $server['ip'], 'port' => $server['port']);
             }
         }
 
@@ -90,11 +111,6 @@ class M6WebRedisExtension extends Extension
         $definition->setScope(ContainerInterface::SCOPE_CONTAINER);
         $definition->addArgument(new Reference($redisCacheId));
         $definition->addMethodCall('setEventDispatcher', array(new Reference('event_dispatcher'), 'M6Web\Bundle\RedisBundle\EventDispatcher\RedisEvent'));
-        /*$definition->addMethodCall('setConcurrentMax', array($config['concurrent_max']));
-        $definition->addMethodCall('setTtlKeyValueMultiplier', array($config['ttl_key_value_multiplier']));
-        $definition->addMethodCall('setTtlLock', array($config['ttl_lock']));*/
-
-
 
         if (array_key_exists('cache_resetter', $config)) {
             $definition->addMethodCall('setCacheResetter', array(new Reference($config['cache_resetter'])));
