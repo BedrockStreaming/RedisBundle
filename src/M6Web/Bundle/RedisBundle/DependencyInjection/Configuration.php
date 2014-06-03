@@ -23,10 +23,10 @@ class Configuration implements ConfigurationInterface
         $this->addServersSection($rootNode);
         $this->addClientsSection($rootNode);
 
-        $rootNodeDb = $treeBuilder->root('m6_dbredis');
-        $this->addDbResetterSection($rootNodeDb);
-        $this->addServersSection($rootNodeDb);
-        $this->addClientsSection($rootNodeDb);
+//        $rootNodeDb = $treeBuilder->root('m6_dbredis');
+//        $this->addDbResetterSection($rootNodeDb);
+//        $this->addServersSection($rootNodeDb);
+//        $this->addClientsSection($rootNodeDb);
 
         return $treeBuilder;
     }
