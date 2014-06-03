@@ -114,7 +114,14 @@ $guzzleHttpClient->addSubscriber($cachePlugin);
 
 ### dataCollector
 
-TODO - pics
+Datacollector is enabled by defaut.
+
+To de-activate
+
+```
+m6_redis:
+    disable_data_collector: true
+```
 
 ### cacheResetter
 

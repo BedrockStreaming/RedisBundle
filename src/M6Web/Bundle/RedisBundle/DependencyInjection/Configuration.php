@@ -19,14 +19,17 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('m6_redis');
+        $rootNode->children()
+            ->booleanNode('disable_data_collector')->defaultValue(false)->end()
+        ->end();
         $this->addCacheResetterSection($rootNode);
         $this->addServersSection($rootNode);
         $this->addClientsSection($rootNode);
 
-        $rootNodeDb = $treeBuilder->root('m6_dbredis');
-        $this->addDbResetterSection($rootNodeDb);
-        $this->addServersSection($rootNodeDb);
-        $this->addClientsSection($rootNodeDb);
+//        $rootNodeDb = $treeBuilder->root('m6_dbredis');
+//        $this->addDbResetterSection($rootNodeDb);
+//        $this->addServersSection($rootNodeDb);
+//        $this->addClientsSection($rootNodeDb);
 
         return $treeBuilder;
     }
@@ -36,9 +39,6 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('cache_resetter')->defaultValue(null)->end()
-                //->scalarNode('concurrent_max')->defaultValue(0)->end()
-                //->scalarNode('ttl_lock')->defaultValue(10)->end()
-                //->scalarNode('ttl_key_value_multiplier')->defaultValue(3)->end()
             ->end();
 
     }
@@ -87,9 +87,6 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('timeout')->defaultValue(100)->end()
                             ->scalarNode('type')->defaultValue('cache')->end()
                             ->scalarNode('compress')->defaultValue(false)->end()
-                            //->scalarNode('concurrent_max')->defaultValue(5)->end()
-                            //->scalarNode('ttl_lock')->defaultValue(10)->end()
-                            //->scalarNode('ttl_key_value_multiplier')->defaultValue(3)->end()
                             ->scalarNode('cache_resetter')->end()
                             ->scalarNode('class')->defaultValue('M6Web\Bundle\RedisBundle\Redis\Redis')->end()
                         ->end()
