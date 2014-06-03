@@ -36,9 +36,6 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('cache_resetter')->defaultValue(null)->end()
-                //->scalarNode('concurrent_max')->defaultValue(0)->end()
-                //->scalarNode('ttl_lock')->defaultValue(10)->end()
-                //->scalarNode('ttl_key_value_multiplier')->defaultValue(3)->end()
             ->end();
 
     }
@@ -87,9 +84,6 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('timeout')->defaultValue(100)->end()
                             ->scalarNode('type')->defaultValue('cache')->end()
                             ->scalarNode('compress')->defaultValue(false)->end()
-                            //->scalarNode('concurrent_max')->defaultValue(5)->end()
-                            //->scalarNode('ttl_lock')->defaultValue(10)->end()
-                            //->scalarNode('ttl_key_value_multiplier')->defaultValue(3)->end()
                             ->scalarNode('cache_resetter')->end()
                             ->scalarNode('class')->defaultValue('M6Web\Bundle\RedisBundle\Redis\Redis')->end()
                         ->end()
