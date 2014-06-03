@@ -19,6 +19,9 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('m6_redis');
+        $rootNode->children()
+            ->booleanNode('disable_data_collector')->defaultValue(false)->end()
+        ->end();
         $this->addCacheResetterSection($rootNode);
         $this->addServersSection($rootNode);
         $this->addClientsSection($rootNode);
