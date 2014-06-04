@@ -30,15 +30,15 @@ class M6WebRedisExtension extends Extension
         $servers = isset($config['servers']) ? $config['servers'] : array();
         $clients = isset($config['clients']) ? $config['clients'] : array();
         $cacheResetterService = $config['cache_resetter'];
-        foreach ($clients as $alias => $config) {
-            if ($config['type'] == 'db') {
-                $this->loadDbClient($container, $alias, $config, $servers);
+        foreach ($clients as $alias => $clientConfig) {
+            if ($clientConfig['type'] == 'db') {
+                $this->loadDbClient($container, $alias, $clientConfig, $servers);
             } else {
-                $this->loadClient($container, $alias, $config, $servers, $cacheResetterService);
+                $this->loadClient($container, $alias, $clientConfig, $servers, $cacheResetterService);
             }
         }
 
-        if (!$configs['disable_data_collector'])
+        if (!$config['disable_data_collector'])
         {
             $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
             $loader->load('data_collector.yml');
