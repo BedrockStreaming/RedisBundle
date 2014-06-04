@@ -38,7 +38,7 @@ class M6WebRedisExtension extends Extension
             }
         }
 
-        if (!$config['disable_data_collector'])
+        if (!$configs['disable_data_collector'])
         {
             $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
             $loader->load('data_collector.yml');
