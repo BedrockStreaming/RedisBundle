@@ -29,17 +29,23 @@ class M6WebRedisExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
         $servers = isset($config['servers']) ? $config['servers'] : array();
         $clients = isset($config['clients']) ? $config['clients'] : array();
-        $cacheResetterService = $config['cache_resetter'];
         foreach ($clients as $alias => $clientConfig) {
-            if ($clientConfig['type'] == 'db') {
-                $this->loadDbClient($container, $alias, $clientConfig, $servers);
-            } else {
-                $this->loadClient($container, $alias, $clientConfig, $servers, $cacheResetterService);
+            switch ($clientConfig['type']){
+                case 'cache':
+                    $this->loadCacheClient($container, $alias, $clientConfig, $servers);
+                    break;
+                case 'db':
+                    $this->loadDbClient($container, $alias, $clientConfig, $servers);
+                    break;
+                case 'multi':
+                    $this->loadMultiClient($container, $alias, $clientConfig, $servers);
+                    break;
+                default:
+                    throw new InvalidConfigurationException("Invalid client type");
             }
         }
 
-        if (!$config['disable_data_collector'])
-        {
+        if (!$config['disable_data_collector']) {
             $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
             $loader->load('data_collector.yml');
         }
@@ -47,16 +53,15 @@ class M6WebRedisExtension extends Extension
 
     /**
      * Load a client configuration as a service in the container. A client can use multiple servers
-     * @param ContainerInterface $container            The container
-     * @param string             $alias                Alias of the client
-     * @param array              $config               Base config of the client
-     * @param array              $servers              List of available servers as describe in the config file
-     * @param object             $cacheResetterService Set the cache resetter service to use
+     * @param ContainerInterface $container The container
+     * @param string             $alias     Alias of the client
+     * @param array              $config    Base config of the client
+     * @param array              $servers   List of available servers as describe in the config file
      *
      * @throws \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      * @return void
      */
-    protected function loadClient($container, $alias, array $config, array $servers, $cacheResetterService = null)
+    protected function loadCacheClient($container, $alias, array $config, array $servers)
     {
         $configuration = array(
             'namespace'      => $config['namespace'],
@@ -127,11 +132,12 @@ class M6WebRedisExtension extends Extension
      * @param string             $alias     Alias of the client
      * @param array              $config    Base config of the client
      * @param array              $servers   List of available servers as describe in the config file
+     * @param string             $type      db or multi
      *
      * @throws \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      * @return void
      */
-    protected function loadDbClient($container, $alias, array $config, array $servers)
+    protected function loadClient($container, $alias, array $config, array $servers, $type = 'db')
     {
         $configuration = array(
             'timeout'        => $config['timeout'],
@@ -151,14 +157,52 @@ class M6WebRedisExtension extends Extension
             throw new InvalidConfigurationException(sprintf("M6Redis client %s used is a db client and can't have %s server configured", $alias, count($configuration['server_config'])));
         }
 
-        $serviceId  = ($alias == 'default') ? 'm6_dbredis' : 'm6_dbredis.'.$alias;
-        $definition = new Definition('M6Web\Component\Redis\DB');
+        switch ($type) {
+            case 'db':
+                $serviceId  = ($alias == 'default') ? 'm6_dbredis' : 'm6_dbredis.'.$alias;
+                $definition = new Definition('M6Web\Component\Redis\DB');
+                break;
+            case 'multi':
+                $serviceId  = ($alias == 'default') ? 'm6_multiredis' : 'm6_multiredis.'.$alias;
+                $definition = new Definition('M6Web\Component\Redis\Multi');
+                break;
+            default:
+                throw new InvalidConfigurationException("Invalid client type");
+        }
+
 
         $definition->setScope(ContainerInterface::SCOPE_CONTAINER);
         $definition->addArgument($configuration);
         $definition->addMethodCall('setEventDispatcher', array(new Reference('event_dispatcher'), 'M6Web\Bundle\RedisBundle\EventDispatcher\RedisEvent'));
 
         $container->setDefinition($serviceId, $definition);
+    }
+
+
+    /**
+     * load a DB client
+     *
+     * @param ContainerInterface $container The container
+     * @param string             $alias     Alias of the client
+     * @param array              $config    Base config of the client
+     * @param array              $servers   List of available servers as describe in the config file
+     */
+    protected function loadDbClient($container, $alias, array $config, array $servers)
+    {
+        $this->loadClient($container, $alias, $config, $servers, 'db');
+    }
+
+    /**
+     * load a Multi client
+     *
+     * @param ContainerInterface $container The container
+     * @param string             $alias     Alias of the client
+     * @param array              $config    Base config of the client
+     * @param array              $servers   List of available servers as describe in the config file
+     */
+    protected function loadMultiClient($container, $alias, array $config, array $servers)
+    {
+        $this->loadClient($container, $alias, $config, $servers, 'multi');
     }
 
 
