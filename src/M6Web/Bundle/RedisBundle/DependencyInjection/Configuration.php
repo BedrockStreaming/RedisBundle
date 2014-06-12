@@ -22,26 +22,13 @@ class Configuration implements ConfigurationInterface
         $rootNode->children()
             ->booleanNode('disable_data_collector')->defaultValue(false)->end()
         ->end();
-        $this->addCacheResetterSection($rootNode);
         $this->addServersSection($rootNode);
         $this->addClientsSection($rootNode);
 
-//        $rootNodeDb = $treeBuilder->root('m6_dbredis');
-//        $this->addDbResetterSection($rootNodeDb);
-//        $this->addServersSection($rootNodeDb);
-//        $this->addClientsSection($rootNodeDb);
 
         return $treeBuilder;
     }
 
-    private function addCacheResetterSection($rootNode)
-    {
-        $rootNode
-            ->children()
-                ->scalarNode('cache_resetter')->defaultValue(null)->end()
-            ->end();
-
-    }
 
     private function addDbResetterSection($rootNodeDb)
     {

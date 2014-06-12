@@ -123,6 +123,20 @@ m6_redis:
     disable_data_collector: true
 ```
 
+### overwriting base class
+
+```
+m6_redis:
+    clients:
+        default:
+            servers: ["first"]
+            type: ["db"]
+            timeout: 0.5
+            class: \MyCompany\Redis
+```
+
+
+
 ### cacheResetter
 
 TODO
