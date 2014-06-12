@@ -90,46 +90,7 @@ class M6WebRedisExtension extends Extension
      */
     protected function loadCacheClient($container, $alias, array $config, array $servers)
     {
-
         $this->loadClient($container, $alias, $config, $servers, 'cache');
-        /*
-        $configuration = array(
-            'namespace'      => $config['namespace'],
-            'timeout'        => $config['timeout'],
-            'compress'       => $config['compress'],
-            'server_config'  => array()
-        );
-
-        if (!isset($config['namespace'])) {
-            throw new InvalidConfigurationException("namespace Parameter for M6Redis server is required");
-        }
-
-        $serverToAdd = array();
-
-        // adding servers
-        $configuration['server_config'] = $this->getServers($config['servers'], $alias);
-
-        if (count($configuration['server_config']) == 0) {
-            throw new InvalidConfigurationException(sprintf("no server configured for %s client", $alias));
-        }
-
-        $redisCacheId = sprintf('m6_redis.cache.%s', $alias);
-        $container
-            ->register($redisCacheId, 'M6Web\Component\Redis\Cache')
-            ->addArgument($configuration);
-
-        $serviceId  = ($alias == 'default') ? 'm6_redis' : 'm6_redis.'.$alias;
-        $definition = new Definition($config['class']);
-
-        $definition->setScope(ContainerInterface::SCOPE_CONTAINER);
-        $definition->addArgument(new Reference($redisCacheId));
-        $definition->addMethodCall('setEventDispatcher', array(new Reference('event_dispatcher'), 'M6Web\Bundle\RedisBundle\EventDispatcher\RedisEvent'));
-
-        if (array_key_exists('cache_resetter', $config)) {
-            $definition->addMethodCall('setCacheResetter', array(new Reference($config['cache_resetter'])));
-        }
-        $container->setDefinition($serviceId, $definition);
-        */
     }
 
     /**
