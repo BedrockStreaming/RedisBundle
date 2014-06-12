@@ -141,13 +141,13 @@ class M6WebRedisExtension extends Extension
                 break;
             case 'db':
                 $serviceId  = ($alias == 'default') ? 'm6_dbredis' : 'm6_dbredis.'.$alias;
-                $definition->addArgument($configuration);
                 $definition = new Definition('M6Web\Component\Redis\DB');
+                $definition->addArgument($configuration);
                 break;
             case 'multi':
                 $serviceId  = ($alias == 'default') ? 'm6_multiredis' : 'm6_multiredis.'.$alias;
-                $definition->addArgument($configuration);
                 $definition = new Definition('M6Web\Component\Redis\Multi');
+                $definition->addArgument($configuration);
                 break;
             default:
                 throw new InvalidConfigurationException("Invalid client type");
@@ -184,7 +184,7 @@ class M6WebRedisExtension extends Extension
         $serverToAdd = array();
         $toReturn    = array();
 
-        foreach ($servers as $serverAlias) {
+        foreach (array_keys($servers) as $serverAlias) {
             // wildcard detected
             if ((false !== strpos($serverAlias, '*')) or (false !== strpos($serverAlias, '?'))) {
                 $serverFound = 0;
