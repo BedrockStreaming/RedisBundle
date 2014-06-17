@@ -120,7 +120,7 @@ class M6WebRedisExtension extends Extension
             $configuration['compress']  = $config['compress'];
         }
 
-        $configuration['server_config'] = $this->getServers($servers, $alias);
+        $configuration['server_config'] = $this->getServers($servers, $config['servers'], $alias);
 
         if (count($configuration['server_config']) === 0) {
             throw new InvalidConfigurationException(sprintf("no server found for M6Redis client %s", $alias));
@@ -173,22 +173,23 @@ class M6WebRedisExtension extends Extension
     }
 
     /**
-     * @param array  $servers array of servers defined for a client
-     * @param string $alias   alias of the client
+     * @param array  $allServers array of all servers available
+     * @param array  $servers    array of servers defined for a client
+     * @param string $alias      alias of the client
      *
      * @return array
      * @throws \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      */
-    protected function getServers(array $servers, $alias)
+    protected function getServers(array $allServers, array $servers, $alias)
     {
         $serverToAdd = array();
         $toReturn    = array();
 
-        foreach (array_keys($servers) as $serverAlias) {
+        foreach ($servers as $serverAlias) {
             // wildcard detected
             if ((false !== strpos($serverAlias, '*')) or (false !== strpos($serverAlias, '?'))) {
                 $serverFound = 0;
-                foreach ($servers as $serverName => $server) {
+                foreach ($allServers as $serverName => $server) {
                     // serverName match the wildcard
                     if (fnmatch($serverAlias, $serverName)) {
                         $serverToAdd[$serverName] = $server;
@@ -201,13 +202,12 @@ class M6WebRedisExtension extends Extension
                 }
                 // concrete server
             } else {
-                if (!isset($servers[$serverAlias])) {
+                if (!isset($allServers[$serverAlias])) {
                     throw new InvalidConfigurationException("M6Redis client $alias used server $serverAlias which is not defined in the servers section");
                 } else {
-                    $serverToAdd[$serverAlias] = $servers[$serverAlias];
+                    $serverToAdd[$serverAlias] = $allServers[$serverAlias];
                 }
             }
-
             foreach ($serverToAdd as $serverName => $server) {
                 $toReturn[$serverName] = array('ip' => $server['ip'], 'port' => $server['port']);
             }
