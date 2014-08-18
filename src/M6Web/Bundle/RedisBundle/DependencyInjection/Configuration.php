@@ -76,7 +76,7 @@ class Configuration implements ConfigurationInterface
                                 ->min(0)
                             ->end()
                             ->enumNode('type')
-                                ->values('cache', 'db', 'multi')
+                                ->values(['cache', 'db', 'multi'])
                                 ->defaultValue('cache')
                             ->end()
                             ->booleanNode('compress')->defaultFalse()->end()
