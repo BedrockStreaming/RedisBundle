@@ -11,9 +11,20 @@ use Doctrine\Common\Cache\Cache;
  */
 class RedisCacheAdapter implements Cache
 {
-    private $defaultTtl = null;
+    /**
+     * @var interge
+     */
+    protected $defaultTtl = null;
 
-    private $forceTtl = false;
+    /**
+     * @var boolean
+     */
+    protected $forceTtl = false;
+
+    /**
+     * @var \M6Web\Bundle\RedisBundle\Redis\Redis
+     */
+    protected $cache = null;
 
     /**
      * RedisCacheAdapter
@@ -73,15 +84,18 @@ class RedisCacheAdapter implements Cache
         return $this->cache->set($id, serialize($data), $lifeTime);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getStats()
     {
-        $info = $this->redis->info();
+        $info = $this->cache->info();
         return array(
-            Cache::STATS_HITS   => false,
-            Cache::STATS_MISSES => false,
-            Cache::STATS_UPTIME => $info['uptime_in_seconds'],
-            Cache::STATS_MEMORY_USAGE      => $info['used_memory'],
-            Cache::STATS_MEMORY_AVAILABLE  => false
+            Cache::STATS_HITS             => false,
+            Cache::STATS_MISSES           => false,
+            Cache::STATS_UPTIME           => $info['uptime_in_seconds'],
+            Cache::STATS_MEMORY_USAGE     => $info['used_memory'],
+            Cache::STATS_MEMORY_AVAILABLE => false
         );
     }
 }
