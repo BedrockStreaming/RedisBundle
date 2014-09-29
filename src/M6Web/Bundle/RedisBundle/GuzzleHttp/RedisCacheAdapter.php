@@ -75,7 +75,7 @@ class RedisCacheAdapter implements Cache
     /**
      * {@inheritdoc}
      */
-    public function save($id, $data, $lifeTime = false, array $options = null)
+    public function save($id, $data, $lifeTime = false)
     {
         if ($this->forceTtl or (is_int($lifeTime) && $lifeTime < 0) or (!$lifeTime)) {
             $lifeTime = $this->defaultTtl;
