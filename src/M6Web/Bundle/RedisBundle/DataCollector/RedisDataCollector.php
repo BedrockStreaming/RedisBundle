@@ -80,7 +80,7 @@ class RedisDataCollector extends DataCollector
      */
     public function getAvgExecutionTime()
     {
-        $totalExecutionTime = $this->getTotalExecutionTime():
+        $totalExecutionTime = $this->getTotalExecutionTime();
         return ($totalExecutionTime) ? ($totalExecutionTime / count($this->getCommands()) ) : 0;
     }
 }
