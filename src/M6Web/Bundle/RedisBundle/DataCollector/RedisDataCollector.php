@@ -17,7 +17,7 @@ class RedisDataCollector extends DataCollector
      */
     public function __construct()
     {
-        $this->data['redis'] = new \SplStack();
+        $this->data['redis'] = new \SplQueue();
     }
 
     /**
