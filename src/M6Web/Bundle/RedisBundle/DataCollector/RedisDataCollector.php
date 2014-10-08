@@ -10,8 +10,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class RedisDataCollector extends DataCollector
 {
-    private $commands;
-
     /**
      * Construct the data collector
      */
