@@ -17,7 +17,7 @@ class RedisDataCollector extends DataCollector
      */
     public function __construct()
     {
-        $this->data['redis'] = array();
+        $this->data['redis'] = new \SplStack();
     }
 
     /**
@@ -67,12 +67,11 @@ class RedisDataCollector extends DataCollector
      */
     public function getTotalExecutionTime()
     {
-        $ret = 0;
-        foreach ($this->data['redis'] as $command) {
-            $ret += $command['executiontime'];
-        }
+        return array_reduce(iterator_to_array($this->getCommands()), function ($time, $value) {
+            $time += $value['executiontime'];
 
-        return $ret;
+            return $time;
+        });
     }
 
     /**
@@ -81,6 +80,7 @@ class RedisDataCollector extends DataCollector
      */
     public function getAvgExecutionTime()
     {
-        return ($this->getTotalExecutionTime()) ? ($this->getTotalExecutionTime() / count($this->data['redis']) ) : 0;
+        $totalExecutionTime = $this->getTotalExecutionTime():
+        return ($totalExecutionTime) ? ($totalExecutionTime / count($this->getCommands()) ) : 0;
     }
 }
