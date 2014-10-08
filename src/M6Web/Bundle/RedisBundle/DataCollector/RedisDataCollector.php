@@ -11,12 +11,13 @@ use Symfony\Component\HttpFoundation\Request;
 class RedisDataCollector extends DataCollector
 {
     private $commands;
+
     /**
      * Construct the data collector
      */
     public function __construct()
     {
-        $this->data['commands'] = array();
+        $this->data['redis'] = array();
     }
 
     /**
@@ -35,7 +36,7 @@ class RedisDataCollector extends DataCollector
      */
     public function onRedisCommand($event)
     {
-        $this->data['commands'][] = array(
+        $this->data['redis'][] = array(
             'command'   => $event->getCommand(),
             'arguments' => $event->getArguments(),
             'executiontime' => $event->getExecutionTime()
@@ -48,7 +49,7 @@ class RedisDataCollector extends DataCollector
      */
     public function getCommands()
     {
-        return $this->data['commands'];
+        return $this->data['redis'];
     }
 
     /**
@@ -67,7 +68,7 @@ class RedisDataCollector extends DataCollector
     public function getTotalExecutionTime()
     {
         $ret = 0;
-        foreach ($this->data['commands'] as $command) {
+        foreach ($this->data['redis'] as $command) {
             $ret += $command['executiontime'];
         }
 
@@ -80,6 +81,6 @@ class RedisDataCollector extends DataCollector
      */
     public function getAvgExecutionTime()
     {
-        return ($this->getTotalExecutionTime()) ? ($this->getTotalExecutionTime() / count($this->data['commands']) ) : 0;
+        return ($this->getTotalExecutionTime()) ? ($this->getTotalExecutionTime() / count($this->data['redis']) ) : 0;
     }
 }
