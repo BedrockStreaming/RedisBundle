@@ -10,13 +10,12 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class RedisDataCollector extends DataCollector
 {
-    private $commands;
     /**
      * Construct the data collector
      */
     public function __construct()
     {
-        $this->data['commands'] = array();
+        $this->data['redis'] = new \SplQueue();
     }
 
     /**
@@ -35,7 +34,7 @@ class RedisDataCollector extends DataCollector
      */
     public function onRedisCommand($event)
     {
-        $this->data['commands'][] = array(
+        $this->data['redis'][] = array(
             'command'   => $event->getCommand(),
             'arguments' => $event->getArguments(),
             'executiontime' => $event->getExecutionTime()
@@ -48,7 +47,7 @@ class RedisDataCollector extends DataCollector
      */
     public function getCommands()
     {
-        return $this->data['commands'];
+        return $this->data['redis'];
     }
 
     /**
@@ -66,12 +65,11 @@ class RedisDataCollector extends DataCollector
      */
     public function getTotalExecutionTime()
     {
-        $ret = 0;
-        foreach ($this->data['commands'] as $command) {
-            $ret += $command['executiontime'];
-        }
+        return array_reduce(iterator_to_array($this->getCommands()), function ($time, $value) {
+            $time += $value['executiontime'];
 
-        return $ret;
+            return $time;
+        });
     }
 
     /**
@@ -80,6 +78,7 @@ class RedisDataCollector extends DataCollector
      */
     public function getAvgExecutionTime()
     {
-        return ($this->getTotalExecutionTime()) ? ($this->getTotalExecutionTime() / count($this->data['commands']) ) : 0;
+        $totalExecutionTime = $this->getTotalExecutionTime();
+        return ($totalExecutionTime) ? ($totalExecutionTime / count($this->getCommands()) ) : 0;
     }
 }
