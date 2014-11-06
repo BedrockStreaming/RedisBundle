@@ -19,17 +19,12 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
 
+        $rootNode = $treeBuilder->root('m6_redis');
+
+        $this->addServersSection($rootNode);
+        $this->addClientsSection($rootNode);
+
         return $treeBuilder;
-    }
-
-
-    private function addDbResetterSection($rootNodeDb)
-    {
-        $rootNodeDb
-            ->children()
-                ->scalarNode('cache_resetter')->defaultValue(null)->end()
-            ->end();
-
     }
 
     private function addServersSection($rootNode)

@@ -133,9 +133,6 @@ class M6WebRedisExtension extends Extension
                 $serviceId  = ($alias == 'default') ? 'm6_redis' : 'm6_redis.'.$alias;
                 $definition = new Definition($config['class']);
                 $definition->addArgument(new Reference($redisCacheId));
-                if (array_key_exists('cache_resetter', $config)) {
-                    $definition->addMethodCall('setCacheResetter', array(new Reference($config['cache_resetter'])));
-                }
                 break;
             case 'db':
                 $serviceId  = ($alias == 'default') ? 'm6_dbredis' : 'm6_dbredis.'.$alias;
