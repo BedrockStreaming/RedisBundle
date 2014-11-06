@@ -114,14 +114,11 @@ $guzzleHttpClient->addSubscriber($cachePlugin);
 
 ### dataCollector
 
-Datacollector is enabled by defaut.
+Datacollector is available when the Symfony profiler is enabled. The collector allow you to see the following Redis data:
 
-To de-activate
-
-```
-m6_redis:
-    disable_data_collector: true
-```
+ - Command name
+ - Execution time
+ - Command arguments
 
 ### overwriting base class
 
