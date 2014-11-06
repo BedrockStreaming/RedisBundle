@@ -18,13 +18,6 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('m6_redis');
-        $rootNode->children()
-            ->booleanNode('disable_data_collector')->defaultValue(false)->end()
-        ->end();
-        $this->addServersSection($rootNode);
-        $this->addClientsSection($rootNode);
-
 
         return $treeBuilder;
     }
