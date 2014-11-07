@@ -1,7 +1,6 @@
 <?php
 namespace M6Web\Bundle\RedisBundle\Redis;
 
-use M6Web\Bundle\RedisBundle\Redis\CacheResetter\CacheResetterInterface;
 use M6Web\Component\Redis\Cache;
 
 /**
@@ -16,8 +15,6 @@ class Redis
      * @var Cache
      */
     protected $redis = null;
-
-    protected $cacheResetter = null;
 
     /**
      * constructeur
@@ -54,19 +51,6 @@ class Redis
         return $this->redis;
     }
 
-    /**
-     * Set the cache reset service to use
-     *
-     * @param CacheResetterInterface $cacheResetter
-     *
-     * @return $this
-     */
-    public function setCacheResetter(CacheResetterInterface $cacheResetter)
-    {
-        $this->cacheResetter = $cacheResetter;
-
-        return $this;
-    }
 
     /**
      * Get a redis key. If the refresh cache option is set, return false
@@ -77,13 +61,6 @@ class Redis
      */
     public function get($key)
     {
-        // should we refresh the cache ?
-        if (($this->shouldResetCache())) {
-            $this->remove($key);
-
-            return false;
-        }
-
         return $this->redis->get($key);
     }
 
@@ -96,16 +73,7 @@ class Redis
      */
     public function has($key)
     {
-        $exists = $this->redis->exists($key);
-
-        // If the key exists and we must refresh the cache, then we remove the key and return false
-        if ($exists && ($this->shouldResetCache())) {
-            $this->remove($key);
-
-            return false;
-        }
-
-        return $exists;
+        return $this->redis->exists($key);
     }
 
     /**
@@ -137,26 +105,6 @@ class Redis
         } else {
             throw new Exception('Redis object is null !');
         }
-    }
-
-    /**
-     * @return null
-     */
-    public function getCacheResetter()
-    {
-        return $this->cacheResetter;
-    }
-
-    /**
-     * @return bool
-     */
-    public function shouldResetCache()
-    {
-        if ($this->cacheResetter) {
-            return $this->cacheResetter->shouldResetCache();
-        }
-
-        return false;
     }
 
 }

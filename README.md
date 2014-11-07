@@ -22,7 +22,6 @@ in ```config.yml``` for a simple cache service :
 
 ```
 m6_redis:
-    cache_resetter:     'm6.cache_resetter' # allow you to set a service in order to know if the cache should be reseted or not - implement M6Web\Bundle\RedisBundle\Redis\CacheResetter\CacheResetterInterface
     servers:
         default:
             ip:   'localhost'
@@ -114,14 +113,11 @@ $guzzleHttpClient->addSubscriber($cachePlugin);
 
 ### dataCollector
 
-Datacollector is enabled by defaut.
+Datacollector is available when the Symfony profiler is enabled. The collector allow you to see the following Redis data:
 
-To de-activate
-
-```
-m6_redis:
-    disable_data_collector: true
-```
+ - Command name
+ - Execution time
+ - Command arguments
 
 ### overwriting base class
 
@@ -134,12 +130,6 @@ m6_redis:
             timeout: 0.5
             class: \MyCompany\Redis
 ```
-
-
-
-### cacheResetter
-
-TODO
 
 ## Launch Unit Tests
 

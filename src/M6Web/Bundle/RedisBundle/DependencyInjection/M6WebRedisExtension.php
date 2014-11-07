@@ -45,10 +45,8 @@ class M6WebRedisExtension extends Extension
             }
         }
 
-        if (!$config['disable_data_collector']) {
-            $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-            $loader->load('data_collector.yml');
-        }
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('data_collector.yml');
     }
 
 
@@ -135,9 +133,6 @@ class M6WebRedisExtension extends Extension
                 $serviceId  = ($alias == 'default') ? 'm6_redis' : 'm6_redis.'.$alias;
                 $definition = new Definition($config['class']);
                 $definition->addArgument(new Reference($redisCacheId));
-                if (array_key_exists('cache_resetter', $config)) {
-                    $definition->addMethodCall('setCacheResetter', array(new Reference($config['cache_resetter'])));
-                }
                 break;
             case 'db':
                 $serviceId  = ($alias == 'default') ? 'm6_dbredis' : 'm6_dbredis.'.$alias;
