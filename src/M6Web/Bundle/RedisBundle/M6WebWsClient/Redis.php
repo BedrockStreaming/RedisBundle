@@ -15,7 +15,7 @@ class Redis extends BaseRedis implements CacheInterface
      */
     public function set($key, $value, $ttl = null)
     {
-        return $this->redis->set($key, $value, $ttl);
+        return $this->set($key, $value, $ttl);
     }
 
     /**
@@ -23,6 +23,6 @@ class Redis extends BaseRedis implements CacheInterface
      */
     public function ttl($key)
     {
-        return $this->redis->ttl($key);
+        return $this->ttl($key);
     }
 }
