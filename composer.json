@@ -1,31 +1,31 @@
 {
     "name": "m6web/redis-bundle",
     "type": "symfony-bundle",
-    "description" : "bundle sf2 on top of m6web/redis-component",
+    "description" : "bundle sf2 on top of predis",
     "authors": [
         {
             "name": "Olivier Mansour",
             "email": "olivier.mansour@m6.fr"
         }
     ],
+    "config": {
+        "vendor-dir": "vendor",
+        "bin-dir": "bin"
+    },
     "require": {
-        "php": ">=7.0",
-        "m6web/redis-component": "^3.3.0",
-        "doctrine/cache":        "~1.3"
+        "php": ">=7.1",
+        "predis/predis": "^1.1.1",
+        "doctrine/cache": "~1.3",
+        "b1rdex/predis-compressible": "^0.3.0"
     },
     "require-dev": {
+        "m6web/php-cs-fixer-config": "^1.0",
         "atoum/atoum":      "@stable",
         "m6web/redis-mock": "@stable",
         "symfony/symfony": "~2.3|~3.0",
-        "m6web/coke" : "~1.2",
-        "m6web/symfony2-coding-standard" : "~1.1",
         "psr/cache": "~1.0"
     },
-    "suggest": {
-      "m6web/wsclient-bundle": "@stable",
-      "m6web/aws-bundle":      "@stable"
-    },
     "autoload": {
-        "psr-0": { "": "src/" }
+        "psr-4": { "M6Web\\Bundle\\RedisBundle\\": "src/" }
     }
 }
