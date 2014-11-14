@@ -75,7 +75,7 @@ class M6WebRedisExtension extends Extension
         $definition->addArgument(new Reference($redisCacheId));
         $definition->setScope(ContainerInterface::SCOPE_CONTAINER);
         $definition->addMethodCall('setEventDispatcher', array(new Reference('event_dispatcher')));
-        $definition->addMethodCall('setEventNames', explode('|', $config['eventnames']));
+        $definition->addMethodCall('setEventName', $config['eventname']);
 
         $container->setDefinition($serviceId, $definition);
     }

@@ -31,10 +31,10 @@ class Redis
     protected $eventClass = null;
 
     /**
-     * eventNames to be dispatched
+     * eventName to be dispatched
      * @var array
      */
-    protected $eventNames = ['redis.command'];
+    protected $eventName = 'redis.command';
 
 
     /**
@@ -119,13 +119,13 @@ class Redis
     }
 
     /**
-     * @param $names array array of events name to fire
+     * @param $name string event name to fire
      *
      * @return $this
      */
-    public function setEventNames(array $names)
+    public function setEventName($name)
     {
-        $this->eventNames = $names;
+        $this->eventName = $name;
 
         return $this;
     }
@@ -145,9 +145,7 @@ class Redis
             $event->setCommand($command);
             $event->setExecutionTime($time);
             $event->setArguments($arguments);
-            foreach ($this->eventNames as $eventName) {
-                $this->eventDispatcher->dispatch($eventName, $event);
-            }
+            $this->eventDispatcher->dispatch($this->eventName, $event);
         }
 
         return $this;
