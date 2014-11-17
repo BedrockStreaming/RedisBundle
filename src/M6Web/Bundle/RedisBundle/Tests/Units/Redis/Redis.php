@@ -34,7 +34,7 @@ class Redis extends atoum\test
     protected function getRedisInstance()
     {
         $factory     = new RedisMockFactory();
-        $myRedisMockClass = $factory->getAdapterClass('M6Web\Component\Redis\Cache', true, true);
+        $myRedisMockClass = $factory->getAdapterClass('Predis\Client', true, true);
 //        $myRedisMockClass = $factory->getMock('M6Web\Component\Redis\Cache', false, [
 //                'orphanizeConstructor' => true,
 //                'failOnlyAtRuntime' => true
@@ -57,7 +57,7 @@ class Redis extends atoum\test
         $controller = new \atoum\mock\controller();
         $controller->__construct = function() {}; // overwrite constructor
         $controller->del         = function() {}; // overwrite del method
-        $redisObject = new \mock\M6Web\Component\Redis\Cache($controller);
+        $redisObject = new \mock\Predis\Client;
         $redis->setRedis($redisObject);
 
         $this->if($redis->remove('raoul'))

@@ -19,7 +19,6 @@ class RedisSessionHandler implements \SessionHandlerInterface
     {
         $this->maxLifetime = $maxLifetime;
         $this->redis = clone $redis;
-        $this->redis->setNamespace($redis->getNamespace().'_'.str_replace('\\', '_', __CLASS__).'__');
     }
 
     /**
