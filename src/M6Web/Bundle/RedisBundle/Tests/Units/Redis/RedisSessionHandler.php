@@ -34,7 +34,7 @@ class RedisSessionHandler extends atoum
                 )
             );
         $factory     = new RedisMockFactory();
-        $myRedisMockClass = $factory->getAdapterClass('M6Web\Component\Redis\Cache', true, true);
+        $myRedisMockClass = $factory->getAdapterClass('Predis\Client', true, true);
         $myRedisMock = new $myRedisMockClass($params, true);
         $redis = new BaseRedis($myRedisMock);
 
@@ -50,8 +50,7 @@ class RedisSessionHandler extends atoum
         $s = new BaseRedisSessionHandler($this->getRedisInstance(1), 10);
         $this->if($redis = $s->getRedis())
         ->class('M6Web\Bundle\RedisBundle\Redis\Redis')
-        ->string($redis->getNamespace())
-        ->contains('Session');
+        ;
     }
 
     /**
