@@ -56,23 +56,6 @@ m6web_redis:
 
 ```$this->get('m6web_redis')``` send the default client. ```this->get('m6web_redis.sharded')``` the sharded one.
 
-for a direct access to the predis object (without consistant hashing) (```servers``` section remains the same) :
-
-```
-m6web_redis:
-    clients:
-        default:
-            servers: ["first"]
-            type: ["db"]
-            timeout: 0.5
-        longclient:
-            servers: ["first"]
-            type: ["db"]
-            timeout: 4
-```
-
-```$this->get('m6_dbredis')``` send the default client. ```$this->get('m6_dbredis.longclient)``` the other one. Thoses servers can't have more than one server configured.
-
 ### sf2 events
 
 ### list of options in servers configuration
