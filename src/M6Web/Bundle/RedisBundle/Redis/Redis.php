@@ -119,7 +119,7 @@ class Redis
     }
 
     /**
-     * @param $name string event name to fire
+     * @param string $name event name to fire
      *
      * @return $this
      */

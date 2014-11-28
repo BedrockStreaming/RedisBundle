@@ -39,9 +39,9 @@ class M6WebRedisExtension extends Extension
 
     /**
      * Load a dbclient configuration as a service in the container. A client can use multiple servers
-     * @param ContainerInterface $container    The container
-     * @param string             $clientAlias  Alias of the client
-     * @param array              $config       global config
+     * @param ContainerInterface $container   The container
+     * @param string             $clientAlias Alias of the client
+     * @param array              $config      global config
      *
      * @throws \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      * @return void
@@ -94,8 +94,7 @@ class M6WebRedisExtension extends Extension
         $serverToAdd = [];
         $toReturn    = [];
 
-        foreach ($clientServers as $clientServer)
-        {
+        foreach ($clientServers as $clientServer) {
             // wildcard detected
             if ((false !== strpos($clientServer, '*')) or (false !== strpos($clientServer, '?'))) {
                 $serverFound = 0;

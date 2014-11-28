@@ -90,6 +90,7 @@ class RedisCacheAdapter implements Cache
     public function getStats()
     {
         $info = $this->cache->info();
+
         return array(
             Cache::STATS_HITS             => false,
             Cache::STATS_MISSES           => false,
