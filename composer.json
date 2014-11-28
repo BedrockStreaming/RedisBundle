@@ -15,7 +15,9 @@
     "require-dev": {
         "atoum/atoum":      "master-dev",
         "m6web/redis-mock": "@stable",
-        "symfony/symfony": "~2.3"
+        "symfony/symfony": "~2.3",
+        "m6web/coke" : "~1.2",
+        "m6web/symfony2-coding-standard"   : "~1.1"
     },
     "suggest": {
         "m6web/wsclient-bundle" : "@stable",
