@@ -120,7 +120,8 @@ class M6WebRedisExtension extends Extension
 
         foreach ($serverToAdd as $alias => $server) {
             //format the array according to predis client need
-            $toReturn[] = $server + array('alias', $alias);
+            $server['alias'] = $alias;
+            $toReturn[]      = $server;
         }
 
         return $toReturn;
