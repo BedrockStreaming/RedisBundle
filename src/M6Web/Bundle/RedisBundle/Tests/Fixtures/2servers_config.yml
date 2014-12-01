@@ -1,0 +1,20 @@
+m6_redis:
+    servers:
+        server1:
+            host:   'lolcathost'
+            port: 6379
+            timeout:   2               # timeout in second
+        server2:
+            host:   'raoulhost'
+            port: 6379
+            timeout:   4               # timeout in second
+    clients:
+        default:
+            servers:   ["*"]          # list of servers to use
+            namespace: tous\          # namespace to use
+        all:
+            servers:   ["server*"]          # list of servers to use
+            namespace: tousmaistous\        # namespace to use
+        one:
+            servers:   ["server1"]     # list of servers to use
+            namespace: server1\          # namespace to use

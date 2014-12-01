@@ -54,7 +54,52 @@ class M6WebRedisExtension extends atoum\test
             ->boolean($this->container->has('m6_redis'))
             ->isIdenticalTo(true)
             ->and()
-            ->object($this->container->get('m6_redis'))
-            ->isInstanceOf('M6Web\Bundle\RedisBundle\Redis\Redis');
+            ->object($serviceRedis = $this->container->get('m6_redis'))
+            ->isInstanceOf('M6Web\Bundle\RedisBundle\Redis\Redis')
+            ->and()
+            ->integer($serviceRedis->getConnection()->count())
+            ->isEqualTo(1)
+            ->string((string) $serviceRedis->getConnection()->getIterator()['server1'])
+            ->isEqualTo('lolcathost:6379')
+            ->string($serviceRedis->getOptions()->prefix->getPrefix())
+            ->isEqualTo('raoul\\')
+            ->integer($serviceRedis->getConnection()->getIterator()['server1']->getParameters()->timeout)
+            ->isEqualTo(2)
+            ->string($serviceRedis->getConnection()->getIterator()['server1']->getParameters()->alias)
+            ->isEqualTo('server1');
+    }
+
+    public function test2serverConfiguration()
+    {
+        $this->initContainer();
+        $this->loadConfiguration($this->container, '2servers_config');
+        $this->container->compile();
+
+        $this->assert
+            ->boolean($this->container->has('m6_redis'))
+            ->isIdenticalTo(true)
+            ->and()
+            ->object($serviceRedis = $this->container->get('m6_redis')) // default client
+            ->isInstanceOf('M6Web\Bundle\RedisBundle\Redis\Redis')
+            ->and()
+            ->integer($serviceRedis->getConnection()->count())
+            ->isEqualTo(2)
+
+            ->string((string) $serviceRedis->getConnection()->getIterator()['server1'])
+            ->isEqualTo('lolcathost:6379')
+            ->integer($serviceRedis->getConnection()->getIterator()['server1']->getParameters()->timeout)
+            ->isEqualTo(2)
+            ->string($serviceRedis->getConnection()->getIterator()['server1']->getParameters()->alias)
+            ->isEqualTo('server1')
+
+            ->string((string) $serviceRedis->getConnection()->getIterator()['server2'])
+            ->isEqualTo('raoulhost:6379')
+            ->integer($serviceRedis->getConnection()->getIterator()['server2']->getParameters()->timeout)
+            ->isEqualTo(4)
+            ->string($serviceRedis->getConnection()->getIterator()['server2']->getParameters()->alias)
+            ->isEqualTo('server2')
+
+        ;
+
     }
 } 
