@@ -13,7 +13,7 @@
         "predis/predis": "~1.0"
     },
     "require-dev": {
-        "atoum/atoum":      "master-dev",
+        "atoum/atoum":      "@stable",
         "m6web/redis-mock": "@stable",
         "symfony/symfony": "~2.3",
         "m6web/coke" : "~1.2",
