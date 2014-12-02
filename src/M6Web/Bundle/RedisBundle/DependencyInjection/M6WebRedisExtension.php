@@ -27,7 +27,6 @@ class M6WebRedisExtension extends Extension
     {
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
-        //$servers = isset($config['servers']) ? $config['servers'] : [];
         $clients = isset($config['clients']) ? $config['clients'] : [];
         foreach ($clients as $clientAlias => $clientConfig) {
             $this->loadClient($container, $clientAlias, $config);
