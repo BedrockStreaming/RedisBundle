@@ -10,11 +10,11 @@ m6_redis:
             timeout:   4               # timeout in second
     clients:
         default:
-            servers:   ["*"]          # list of servers to use
-            namespace: tous\          # namespace to use
+            servers: ["*"]          # list of servers to use
+            prefix : tous\          # namespace to use
         all:
-            servers:   ["server*"]          # list of servers to use
-            namespace: tousmaistous\        # namespace to use
+            servers: ["server*"]          # list of servers to use
+            prefix : tousmaistous\        # namespace to use
         one:
-            servers:   ["server1"]     # list of servers to use
-            namespace: server1\          # namespace to use
+            servers: ["server1"]     # list of servers to use
+            prefix : server1\          # namespace to use

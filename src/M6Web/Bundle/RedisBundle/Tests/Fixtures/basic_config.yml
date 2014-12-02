@@ -7,4 +7,4 @@ m6_redis:
     clients:
         default:
             servers:   ["server1"]     # list of servers to use
-            namespace: raoul\          # namespace to use
+            prefix : raoul\          # namespace to use

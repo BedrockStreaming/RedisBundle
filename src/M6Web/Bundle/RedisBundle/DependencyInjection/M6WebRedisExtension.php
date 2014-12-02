@@ -47,12 +47,11 @@ class M6WebRedisExtension extends Extension
      */
     protected function loadClient($container, $clientAlias, array $config)
     {
-        $options = [];
-
+        $options      = [];
         $clientConfig = $config['clients'][$clientAlias];
 
-        if (array_key_exists('namespace', $clientConfig)) {
-            $options['prefix'] = $clientConfig['namespace'];
+        if (array_key_exists('prefix', $clientConfig)) {
+            $options['prefix'] = $clientConfig['prefix'];
         }
 
         $servers = $this->getServers($config['servers'], $clientConfig['servers'], $clientAlias);
@@ -69,7 +68,6 @@ class M6WebRedisExtension extends Extension
             ->addArgument($options);
 
         $serviceId  = ($clientAlias == 'default') ? 'm6_redis' : 'm6_redis.'.$clientAlias;
-
 
         $definition = new Definition($clientConfig['class']);
         $definition->addArgument(new Reference($redisCacheId));
