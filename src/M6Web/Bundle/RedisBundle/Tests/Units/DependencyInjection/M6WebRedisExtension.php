@@ -97,9 +97,22 @@ class M6WebRedisExtension extends atoum\test
             ->integer($serviceRedis->getConnection()->getIterator()['server2']->getParameters()->timeout)
             ->isEqualTo(4)
             ->string($serviceRedis->getConnection()->getIterator()['server2']->getParameters()->alias)
-            ->isEqualTo('server2')
+            ->isEqualTo('server2');
 
-        ;
+         // test clients
+        $this->if($serviceRedis = $this->container->get('m6_redis.all'))
+            ->then()
+            ->integer($serviceRedis->getConnection()->count())
+            ->isEqualTo(2)
+            ->string($serviceRedis->getOptions()->prefix->getPrefix())
+            ->isEqualTo('tousmaistous\\');
+
+        $this->if($serviceRedis = $this->container->get('m6_redis.one'))
+            ->then()
+            ->integer($serviceRedis->getConnection()->count())
+            ->isEqualTo(1)
+            ->string($serviceRedis->getOptions()->prefix->getPrefix())
+            ->isEqualTo('server1\\');
 
     }
 } 
