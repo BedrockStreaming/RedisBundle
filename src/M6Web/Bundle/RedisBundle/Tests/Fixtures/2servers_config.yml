@@ -1,7 +1,7 @@
 m6_redis:
     servers:
         server1:
-            host:   'lolcathost'
+            host:   'localhost'
             port: 6379
             timeout:   2               # timeout in second
         server2:
