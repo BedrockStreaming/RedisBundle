@@ -89,6 +89,32 @@ class Redis
     }
 
     /**
+     * Define value for given key
+     *
+     * @param string  $key
+     * @param string  $value
+     * @param integer $ttl
+     *
+     * @return Boolean
+     */
+    public function set($key, $value, $ttl = null)
+    {
+        return $this->redis->set($key, $value, $ttl);
+    }
+
+    /**
+     * Return TTL for given key
+     *
+     * @param string $key
+     *
+     * @return integer
+     */
+    public function ttl($key)
+    {
+        return $this->redis->ttl($key);
+    }
+
+    /**
      * pass unkown methods to the redis object
      *
      * @param mixed $name
