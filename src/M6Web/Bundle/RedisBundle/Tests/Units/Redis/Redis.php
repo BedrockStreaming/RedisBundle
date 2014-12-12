@@ -1,6 +1,8 @@
 <?php
 namespace M6Web\Bundle\RedisBundle\Redis\tests\units;
 
+require_once __DIR__.'/../../../../../../../vendor/autoload.php';
+
 use mageekguy\atoum;
 use M6Web\Component\Redis\Cache;
 use M6Web\Bundle\RedisBundle\Redis\Redis as BaseRedis;
@@ -31,38 +33,49 @@ class Redis extends atoum\test
      */
     protected function getRedisInstance()
     {
-        $factory     = new RedisMockFactory();
-        $myRedisMockClass = $factory->getAdapterClass('Predis\Client', true, true);
-//        $myRedisMockClass = $factory->getMock('M6Web\Component\Redis\Cache', false, [
-//                'orphanizeConstructor' => true,
-//                'failOnlyAtRuntime' => true
-//            ]);
-        $myRedisMock = new $myRedisMockClass(static::$params, true);
-        $redis = new BaseRedis($myRedisMock);
+        $factory          = new RedisMockFactory();
+        $myRedisMockClass = $factory->getAdapterClass('M6Web\Component\Redis\Cache', true, true);
+        $myRedisMock      = new $myRedisMockClass(static::$params, true);
+        $redis            = new BaseRedis($myRedisMock);
 
         return $redis;
     }
 
     /**
-     * test remove method
+     * Test call on injected object
+     *
+     * @dataProvider decoratorCallsDataProvider
      *
      * @return void
      */
-    public function testRemove()
+    public function testDecoratorCalls($srcMethod, $srcArgs, $targetMethod, $targetArgs)
     {
         $redis = $this->getRedisInstance();
 
         $controller = new \atoum\mock\controller();
         $controller->__construct = function() {}; // overwrite constructor
-        $controller->del         = function() {}; // overwrite del method
-        $redisObject = new \mock\Predis\Client;
+        $controller->$targetMethod     = function() {}; // overwrite given method
+
+        $redisObject = new \mock\M6Web\Component\Redis\Cache($controller);
         $redis->setRedis($redisObject);
 
-        $this->if($redis->remove('raoul'))
+        $this->if(call_user_func_array([$redis, $srcMethod], $srcArgs))
             ->then
             ->mock($redisObject)
-                ->call('del')
-                ->once();
+                ->call($targetMethod)
+                     ->withAtLeastArguments($targetArgs)
+                        ->once();
     }
 
+    public function decoratorCallsDataProvider()
+    {
+        return [
+            ['get',    ['foo'],        'get',    ['foo']],
+            ['has',    ['foo'],        'exists', ['foo']],
+            ['remove', ['foo'],        'del',    ['foo']],
+            ['set',    ['foo', 'bar'], 'set',    ['foo', 'bar']],
+            ['ttl',    ['foo'],        'ttl',    ['foo']],
+            ['del',    ['raoul'],      'del',    ['raoul']]
+        ];
+    }
 }
