@@ -14,4 +14,4 @@ This document will be updated to list important BC breaks and behavorial changes
  - rename namespace option to prefix
  - multi mode (exec command on each server) is no longuer available, use master / slave option (see README)
  - internal services are named via the m6web_redis pattern
- - configuration root node is m6web_redis
+ - configuration root node is m6_redis

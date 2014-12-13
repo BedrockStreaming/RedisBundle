@@ -52,7 +52,7 @@ class Redis extends atoum\test
 
         $controller                = new \atoum\mock\controller();
         $controller->__construct   = function() {}; // overwrite constructor
-        $controller->$targetMethod = function() {}; // overwrite del method
+        $controller->$targetMethod = function() {}; // overwrite given method
         $redisObject               = new \mock\Predis\Client;
         $redis->setRedis($redisObject);
 
