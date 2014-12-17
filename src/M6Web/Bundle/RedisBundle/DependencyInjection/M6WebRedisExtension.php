@@ -36,6 +36,11 @@ class M6WebRedisExtension extends Extension
             $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
             $loader->load('data_collector.yml');
         }
+        // setup datacollectors on client events
+        foreach ($clients as $clientAlias => $clientConfig) {
+            $container->getDefinition('m6.data_collector.redis')
+                ->addTag('kernel.event_listener', ['event' => $clientConfig['eventname'], 'method' => 'onRedisCommand']);
+        }
     }
 
     /**
