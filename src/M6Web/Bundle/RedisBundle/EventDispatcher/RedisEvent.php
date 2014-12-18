@@ -13,6 +13,28 @@ class RedisEvent extends Event
     private $command;
     private $arguments;
 
+    private $clientName;
+
+    /**
+     * @param string $v
+     *
+     * @return $this
+     */
+    public function setClientName($v)
+    {
+        $this->clientName = $v;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClientName()
+    {
+        return $this->clientName;
+    }
+
     /**
      * Set the redis command associated with this event
      * @param string $command The redis command
