@@ -1,8 +1,8 @@
 # RedisBundle [![Build Status](https://travis-ci.org/M6Web/RedisBundle.png?branch=master)](https://travis-ci.org/M6Web/RedisBundle)
 
-symfony2 Bundle on top of m6web/redis-component
+symfony2 Bundle on top of predis
 
-see [m6web/redis-component](https://github.com/M6Web/Redis)
+see [predis/predis]()
 
 ## features
 
@@ -21,10 +21,10 @@ see [m6web/redis-component](https://github.com/M6Web/Redis)
 in ```config.yml``` for a simple cache service :
 
 ```
-m6_redis:
+m6web_redis:
     servers:
         default:
-            ip:   'localhost'
+            host:   'localhost'
             port: 6379
     clients:
         default:
@@ -36,13 +36,13 @@ m6_redis:
 for a multiple clients :
 
 ```
-m6_redis:
+m6web_redis:
     servers:
         first:
-            ip:   'localhost'
+            host:   'localhost'
             port: 6379
         second:
-            ip:   'xxxxxxxx'
+            host:   'xxxxxxxx'
     clients:
         default:
             servers:   ["first"]     # list of servers to use
@@ -54,35 +54,33 @@ m6_redis:
             timeout:   1
 ```
 
-```$this->get('m6redis')``` send the default client. ```this->get('m6redis.sharded')``` the sharded one.
+```$this->get('m6web_redis')``` send the default client. ```this->get('m6web_redis.sharded')``` the sharded one.
 
-for a direct access to the predis object (without consistant hashing) (```servers``` section remains the same) :
+### sf2 events
+
+### list of options in servers configuration
+
+TODO 
 
 ```
-m6_redis:
-    clients:
-        default:
-            servers: ["first"]
-            type: ["db"]
-            timeout: 0.5
-        longclient:
-            servers: ["first"]
-            type: ["db"]
-            timeout: 4
-```
+m6web_redis:
+    servers:
+        server1:
+            host:   'localhost'
+            port: 6379
 
-```$this->get('m6_dbredis')``` send the default client. ```$this->get('m6_dbredis.longclient)``` the other one. Thoses servers can't have more than one server configured.
+```
 
 ### server configuration via wildcard
 
 ```
-m6_redis:
+m6web_redis:
     servers:
         server1:
-            ip:   'localhost'
+            host:   'localhost'
             port: 6379
         server2:
-            ip:   'xxxxxxxx'
+            host:   'xxxxxxxx'
     clients:
         default:
             servers:   ["server*"]     # all servers matching server*
@@ -94,6 +92,8 @@ m6_redis:
 ### event dispatcher
 
 The event ```M6Web\Bundle\RedisBundle\EventDispatcher``` is automaticly dispatched to the redis component. Events are fired with the ```redis.command``` label.
+
+TODO : explain how to change by client 
 
 ### session handler
 
@@ -122,7 +122,7 @@ Datacollector is available when the Symfony profiler is enabled. The collector a
 ### overwriting base class
 
 ```
-m6_redis:
+m6web_redis:
     clients:
         default:
             servers: ["first"]

@@ -1,7 +1,9 @@
 <?php
 namespace M6Web\Bundle\RedisBundle\Redis;
 
-use M6Web\Component\Redis\Cache;
+use Predis\Client;
+use Symfony\Component\EventDispatcher;
+use M6Web\Bundle\RedisBundle\EventDispatcher\RedisEvent;
 
 /**
  * Class Redis
@@ -11,30 +13,52 @@ use M6Web\Component\Redis\Cache;
  */
 class Redis
 {
+
+    const DEFAULT_EVENT = 'redis.command';
+
     /**
-     * @var Cache
+     * @var Predis\Client
      */
     protected $redis = null;
 
     /**
-     * constructeur
-     *
-     * @param Cache $redis
+     * event dispatcher
+     * @var EventDispatcher
      */
-    public function __construct(Cache $redis)
+    protected $eventDispatcher = null;
+
+    /**
+     * class of the event notifier
+     * @var string
+     */
+    protected $eventClass = null;
+
+    /**
+     * eventName to be dispatched
+     * @var array
+     */
+    protected $eventName = 'redis.command';
+
+
+    /**
+     * constructor
+     *
+     * @param Client $redis
+     */
+    public function __construct(Client $redis)
     {
 
         return $this->setRedis($redis);
     }
 
     /**
-     * set the Redis
+     * set the predis object
      *
-     * @param Cache $redis
+     * @param Client $redis
      *
      * @return $this
      */
-    public function setRedis(Cache $redis)
+    public function setRedis(Client $redis)
     {
         $this->redis = $redis;
 
@@ -42,30 +66,8 @@ class Redis
     }
 
     /**
-     * get Redis
-     *
-     * @return Cache
-     */
-    public function getRedis()
-    {
-        return $this->redis;
-    }
-
-
-    /**
-     * Get a redis key. If the refresh cache option is set, return false
-     *
-     * @param string $key The get we want
-     *
-     * @return string Result
-     */
-    public function get($key)
-    {
-        return $this->redis->get($key);
-    }
-
-    /**
      * Check if a key exists in redis
+     * An alias for exists
      *
      * @param string $key The key we want to check existenz
      *
@@ -73,11 +75,12 @@ class Redis
      */
     public function has($key)
     {
-        return $this->redis->exists($key);
+        return $this->exists($key);
     }
 
     /**
      * Remove a key from redis
+     * An alias for del
      *
      * @param string $key The key we want to remove
      *
@@ -85,7 +88,7 @@ class Redis
      */
     public function remove($key)
     {
-        return $this->redis->del($key);
+        return $this->del($key);
     }
 
     /**
@@ -99,7 +102,14 @@ class Redis
      */
     public function set($key, $value, $ttl = null)
     {
-        return $this->redis->set($key, $value, $ttl);
+        if (null !== $ttl)
+        {
+
+            return $this->redis->setex($key, $ttl, $value);
+        } else {
+
+            return $this->redis->set($key, $value);
+        }
     }
 
     /**
@@ -117,20 +127,69 @@ class Redis
     /**
      * pass unkown methods to the redis object
      *
-     * @param mixed $name
-     * @param mixed $arguments
+     * @param string $command   redis command
+     * @param mixed  $arguments arguments
      *
      * @return mixed
      * @throws Exception
      */
-    public function __call($name, $arguments)
+    public function __call($command, $arguments)
     {
-        if ($this->redis) {
+        $start = microtime(true);
+        $ret   = call_user_func_array(array($this->redis, $command), $arguments);
+        $this->notifyEvents($command, $arguments, microtime(true) - $start);
 
-            return call_user_func_array(array($this->redis, $name), $arguments);
-        } else {
-            throw new Exception('Redis object is null !');
-        }
+        return $ret;
     }
+
+    /**
+     * @param EventDispatcher\EventDispatcherInterface $eventDispacher sf2 Event dispatcher
+     *
+     * @return $this
+     */
+    public function setEventDispatcher(EventDispatcher\EventDispatcherInterface $eventDispacher)
+    {
+        $this->eventDispatcher = $eventDispacher;
+
+        return $this;
+    }
+
+    /**
+     * @param string $name event name to fire
+     *
+     * @return $this
+     */
+    public function setEventName($name)
+    {
+        $this->eventName = $name;
+
+        return $this;
+    }
+
+    /**
+     * Notify an event to the event dispatcher
+     * @param string $command   The command name
+     * @param array  $arguments args of the command
+     * @param int    $time      exec time
+     *
+     * @return \M6Web\Component\Redis\Manager
+     */
+    public function notifyEvents($command, $arguments, $time)
+    {
+        if ($this->eventDispatcher) {
+            $event = new RedisEvent();
+            $event->setCommand($command);
+            $event->setExecutionTime($time);
+            $event->setArguments($arguments);
+            $this->eventDispatcher->dispatch($this->eventName, $event);
+            if ($this->eventName != self::DEFAULT_EVENT) {
+                $this->eventDispatcher->dispatch(self::DEFAULT_EVENT, $event);
+            }
+        }
+
+        return $this;
+    }
+
+
 
 }

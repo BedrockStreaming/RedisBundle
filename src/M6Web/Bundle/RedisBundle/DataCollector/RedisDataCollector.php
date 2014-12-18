@@ -4,6 +4,7 @@ namespace M6Web\Bundle\RedisBundle\DataCollector;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use M6Web\Bundle\RedisBundle\EventDispatcher\RedisEvent;
 
 /**
  * Handle datacollector for redis
@@ -30,15 +31,16 @@ class RedisDataCollector extends DataCollector
 
     /**
      * Listen for redis command event
-     * @param object $event The event object
+     * @param RedisEvent $event The event object
      */
-    public function onRedisCommand($event)
+    public function onRedisCommand(RedisEvent $event)
     {
-        $this->data['redis'][] = array(
+        $this->data['redis'][] = [
+            'event'     => $event->getClientName(),
             'command'   => $event->getCommand(),
             'arguments' => $event->getArguments(),
             'executiontime' => $event->getExecutionTime()
-        );
+        ];
     }
 
     /**

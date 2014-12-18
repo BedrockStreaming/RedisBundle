@@ -1,8 +1,6 @@
 <?php
 namespace M6Web\Bundle\RedisBundle\Redis\tests\units;
 
-require_once __DIR__.'/../../../../../../../vendor/autoload.php';
-
 use mageekguy\atoum;
 use M6Web\Component\RedisMock\RedisMockFactory;
 use M6Web\Bundle\RedisBundle\Redis\RedisSessionHandler as BaseRedisSessionHandler;
@@ -36,7 +34,7 @@ class RedisSessionHandler extends atoum
                 )
             );
         $factory     = new RedisMockFactory();
-        $myRedisMockClass = $factory->getAdapterClass('M6Web\Component\Redis\Cache', true, true);
+        $myRedisMockClass = $factory->getAdapterClass('Predis\Client', true, true);
         $myRedisMock = new $myRedisMockClass($params, true);
         $redis = new BaseRedis($myRedisMock);
 
@@ -52,8 +50,7 @@ class RedisSessionHandler extends atoum
         $s = new BaseRedisSessionHandler($this->getRedisInstance(1), 10);
         $this->if($redis = $s->getRedis())
         ->class('M6Web\Bundle\RedisBundle\Redis\Redis')
-        ->string($redis->getNamespace())
-        ->contains('Session');
+        ;
     }
 
     /**

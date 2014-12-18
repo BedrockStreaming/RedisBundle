@@ -27,22 +27,9 @@ class M6WebRedisExtension extends Extension
     {
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
-        $servers = isset($config['servers']) ? $config['servers'] : array();
-        $clients = isset($config['clients']) ? $config['clients'] : array();
-        foreach ($clients as $alias => $clientConfig) {
-            switch ($clientConfig['type']){
-                case 'cache':
-                    $this->loadCacheClient($container, $alias, $clientConfig, $servers);
-                    break;
-                case 'db':
-                    $this->loadDbClient($container, $alias, $clientConfig, $servers);
-                    break;
-                case 'multi':
-                    $this->loadMultiClient($container, $alias, $clientConfig, $servers);
-                    break;
-                default:
-                    throw new InvalidConfigurationException("Invalid client type");
-            }
+        $clients = isset($config['clients']) ? $config['clients'] : [];
+        foreach ($clients as $clientAlias => $clientConfig) {
+            $this->loadClient($container, $clientAlias, $config);
         }
 
         if ($container->getParameter('kernel.debug')) {
@@ -51,165 +38,104 @@ class M6WebRedisExtension extends Extension
         }
     }
 
-
-    /**
-     * load a DB client
-     *
-     * @param ContainerInterface $container The container
-     * @param string             $alias     Alias of the client
-     * @param array              $config    Base config of the client
-     * @param array              $servers   List of available servers as describe in the config file
-     */
-    protected function loadDbClient($container, $alias, array $config, array $servers)
-    {
-        $this->loadClient($container, $alias, $config, $servers, 'db');
-    }
-
-    /**
-     * load a Multi client
-     *
-     * @param ContainerInterface $container The container
-     * @param string             $alias     Alias of the client
-     * @param array              $config    Base config of the client
-     * @param array              $servers   List of available servers as describe in the config file
-     */
-    protected function loadMultiClient($container, $alias, array $config, array $servers)
-    {
-        $this->loadClient($container, $alias, $config, $servers, 'multi');
-    }
-
-    /**
-     * Load a client configuration as a service in the container. A client can use multiple servers
-     * @param ContainerInterface $container The container
-     * @param string             $alias     Alias of the client
-     * @param array              $config    Base config of the client
-     * @param array              $servers   List of available servers as describe in the config file
-     *
-     * @throws \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @return void
-     */
-    protected function loadCacheClient($container, $alias, array $config, array $servers)
-    {
-        $this->loadClient($container, $alias, $config, $servers, 'cache');
-    }
-
     /**
      * Load a dbclient configuration as a service in the container. A client can use multiple servers
-     * @param ContainerInterface $container The container
-     * @param string             $alias     Alias of the client
-     * @param array              $config    Base config of the client
-     * @param array              $servers   List of available servers as describe in the config file
-     * @param string             $type      db or multi
+     * @param ContainerInterface $container   The container
+     * @param string             $clientAlias Alias of the client
+     * @param array              $config      global config
      *
      * @throws \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      * @return void
      */
-    protected function loadClient($container, $alias, array $config, array $servers, $type = 'cache')
+    protected function loadClient($container, $clientAlias, array $config)
     {
-        $configuration = array(
-            'timeout'        => $config['timeout'],
-            'server_config'  => array()
-        );
+        $options      = [];
+        $clientConfig = $config['clients'][$clientAlias];
 
-        if ('cache' === $type) {
-            // check namespace
-            if (!isset($config['namespace'])) {
-                throw new InvalidConfigurationException("namespace Parameter for M6Redis cache server is required");
-            }
-            $configuration['namespace'] = $config['namespace'];
-            $configuration['compress']  = $config['compress'];
+        if (array_key_exists('prefix', $clientConfig)) {
+            $options['prefix'] = $clientConfig['prefix'];
         }
 
-        $configuration['server_config'] = $this->getServers($servers, $config['servers'], $alias);
+        $servers = $this->getServers($config['servers'], $clientConfig['servers'], $clientAlias);
 
-        if (count($configuration['server_config']) === 0) {
-            throw new InvalidConfigurationException(sprintf("no server found for M6Redis client %s", $alias));
+        if (count($servers) === 0) {
+            throw new InvalidConfigurationException(sprintf("no server found for client %s", $clientAlias));
         }
 
-        switch ($type) {
-            case 'cache':
-                $redisCacheId = sprintf('m6_redis.cache.%s', $alias);
-                $container
-                    ->register($redisCacheId, 'M6Web\Component\Redis\Cache')
-                    ->addArgument($configuration);
-                $serviceId  = ($alias == 'default') ? 'm6_redis' : 'm6_redis.'.$alias;
-                $definition = new Definition($config['class']);
-                $definition->addArgument(new Reference($redisCacheId));
-                break;
-            case 'db':
-                $serviceId  = ($alias == 'default') ? 'm6_dbredis' : 'm6_dbredis.'.$alias;
-                $definition = new Definition('M6Web\Component\Redis\DB');
-                $definition->addArgument($configuration);
-                break;
-            case 'multi':
-                $serviceId  = ($alias == 'default') ? 'm6_multiredis' : 'm6_multiredis.'.$alias;
-                $definition = new Definition('M6Web\Component\Redis\Multi');
-                $definition->addArgument($configuration);
-                break;
-            default:
-                throw new InvalidConfigurationException("Invalid client type");
-        }
+        // make internal predis service
+        $redisCacheId = sprintf('m6_redis.predis.%s', $clientAlias);
+        $container
+            ->register($redisCacheId, 'Predis\Client')
+            ->addArgument($servers)
+            ->addArgument($options);
 
+        $serviceId  = ($clientAlias == 'default') ? 'm6_redis' : 'm6_redis.'.$clientAlias;
+
+        $definition = new Definition($clientConfig['class']);
+        $definition->addArgument(new Reference($redisCacheId));
         $definition->setScope(ContainerInterface::SCOPE_CONTAINER);
-        $definition->addMethodCall('setEventDispatcher', array(new Reference('event_dispatcher'), 'M6Web\Bundle\RedisBundle\EventDispatcher\RedisEvent'));
+        $definition->addMethodCall('setEventDispatcher', [new Reference('event_dispatcher')]);
+        $definition->addMethodCall('setEventName', [$clientConfig['eventname']]);
 
         $container->setDefinition($serviceId, $definition);
     }
 
     /**
-     * select an alias for the extension
-     *
-     * trick allowing bypassing the Bundle::getContainerExtension check on getAlias
-     * not very clean, to investigate
-     *
-     * @return string
-     */
-    public function getAlias()
-    {
-        return 'm6_redis';
-    }
-
-    /**
-     * @param array  $allServers array of all servers available
-     * @param array  $servers    array of servers defined for a client
-     * @param string $alias      alias of the client
+     * @param array  $servers       array of all servers available
+     * @param array  $clientServers array of servers defined for a client
+     * @param string $clientAlias   alias of the client
      *
      * @return array
      * @throws \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      */
-    protected function getServers(array $allServers, array $servers, $alias)
+    protected function getServers(array $servers, array $clientServers, $clientAlias)
     {
-        $serverToAdd = array();
-        $toReturn    = array();
+        $serverToAdd = [];
+        $toReturn    = [];
 
-        foreach ($servers as $serverAlias) {
+        foreach ($clientServers as $clientServer) {
             // wildcard detected
-            if ((false !== strpos($serverAlias, '*')) or (false !== strpos($serverAlias, '?'))) {
+            if ((false !== strpos($clientServer, '*')) or (false !== strpos($clientServer, '?'))) {
                 $serverFound = 0;
-                foreach ($allServers as $serverName => $server) {
+                foreach ($servers as $serverName => $server) {
                     // serverName match the wildcard
-                    if (fnmatch($serverAlias, $serverName)) {
+                    if (fnmatch($clientServer, $serverName)) {
                         $serverToAdd[$serverName] = $server;
                         $serverFound++;
                     }
                 }
                 // no server found
                 if (0 === $serverFound) {
-                    throw new InvalidConfigurationException("M6Redis client $alias used server $serverAlias which doesnt match to any servers");
+                    throw new InvalidConfigurationException("M6WebRedis client $clientAlias used server $clientServer which doesnt match to any servers configured");
                 }
-                // concrete server
+            // search a server in server list
             } else {
-                if (!isset($allServers[$serverAlias])) {
-                    throw new InvalidConfigurationException("M6Redis client $alias used server $serverAlias which is not defined in the servers section");
-                } else {
-                    $serverToAdd[$serverAlias] = $allServers[$serverAlias];
+                if (!array_key_exists($clientServer, $servers)) {
+                    throw new InvalidConfigurationException("M6WebRedis client $clientAlias used server $clientServer which is not defined in the servers section");
                 }
-            }
-            foreach ($serverToAdd as $serverName => $server) {
-                $toReturn[$serverName] = array('ip' => $server['ip'], 'port' => $server['port']);
+                $serverToAdd[$clientServer] = $servers[$clientServer];
             }
         }
 
+        foreach ($serverToAdd as $alias => $server) {
+            //format the array according to predis client need
+            $server['alias'] = $alias;
+            $toReturn[]      = $server;
+        }
+
         return $toReturn;
+    }
+
+
+    /**
+     * select an alias for the extension
+     *
+     * trick allowing bypassing the Bundle::getContainerExtension check on getAlias
+     *
+     * @return string
+     */
+    public function getAlias()
+    {
+        return 'm6_redis';
     }
 }
