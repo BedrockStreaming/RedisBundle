@@ -99,7 +99,14 @@ class Redis
      */
     public function set($key, $value, $ttl = null)
     {
-        return $this->redis->set($key, $value, $ttl);
+        if (null !== $ttl)
+        {
+
+            return $this->redis->setex($key, $ttl, $value);
+        } else {
+
+            return $this->redis->set($key, $value);
+        }
     }
 
     /**
