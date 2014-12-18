@@ -3,3 +3,4 @@ services:
         class: M6Web\Bundle\RedisBundle\DataCollector\RedisDataCollector
         tags:
             - { name: data_collector, template: 'M6WebRedisBundle:Collector:redis', id: 'redis' }
+            - { name: kernel.event_listener, event: redis.command, method: onRedisCommand } # redis.command is the default event name
