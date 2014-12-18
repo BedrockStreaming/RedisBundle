@@ -13,6 +13,9 @@ use M6Web\Bundle\RedisBundle\EventDispatcher\RedisEvent;
  */
 class Redis
 {
+
+    const DEFAULT_EVENT = 'redis.command';
+
     /**
      * @var Predis\Client
      */
@@ -179,6 +182,9 @@ class Redis
             $event->setExecutionTime($time);
             $event->setArguments($arguments);
             $this->eventDispatcher->dispatch($this->eventName, $event);
+            if ($this->eventName != self::DEFAULT_EVENT) {
+                $this->eventDispatcher->dispatch(self::DEFAULT_EVENT, $event);
+            }
         }
 
         return $this;
