@@ -58,4 +58,18 @@ class M6WebRedisExtension extends atoum\test
                     ->isInstanceOf('M6Web\Bundle\RedisBundle\Redis\Redis');
     }
 
+    public function testReconnectConfiguration()
+    {
+        $this->initContainer();
+        $this->loadConfiguration($this->container, 'reconnect_config');
+        $this->container->compile();
+
+        $this->assert
+            ->boolean($this->container->has('m6_redis'))
+                ->isIdenticalTo(true)
+            ->and()
+                ->object($serviceRedis = $this->container->get('m6_redis'))
+                    ->isInstanceOf('M6Web\Bundle\RedisBundle\Redis\Redis');
+    }
+
 }
