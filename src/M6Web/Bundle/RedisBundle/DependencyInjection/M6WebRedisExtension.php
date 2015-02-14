@@ -111,6 +111,10 @@ class M6WebRedisExtension extends Extension
             'server_config'  => array()
         );
 
+        if (array_key_exists('readwritetimeout', $config)) {
+            $configuration['read_write_timeout'] = $config['readwritetimeout'];
+        }
+
         if ('cache' === $type) {
             // check namespace
             if (!isset($config['namespace'])) {

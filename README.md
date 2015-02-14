@@ -31,6 +31,7 @@ m6_redis:
             servers:   ["default"]     # list of servers to use
             namespace: raoul\          # namespace to use
             timeout:   2               # timeout in second
+            readwritetimeout: 2        # read-write timeout in second
 ```
 
 for a multiple clients :
