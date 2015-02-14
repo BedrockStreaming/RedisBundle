@@ -9,13 +9,16 @@
         }
     ],
     "require": {
-        "php": ">=5.4",
+        "php": ">=5.5",
         "m6web/redis-component": "~2.0",
         "doctrine/cache":        "~1.3"
     },
     "require-dev": {
-        "atoum/atoum":      "master-dev",
-        "m6web/redis-mock": "@stable"
+        "atoum/atoum":      "@stable",
+        "m6web/redis-mock": "@stable",
+        "symfony/symfony": "~2.3",
+        "m6web/coke" : "~1.2",
+        "m6web/symfony2-coding-standard" : "~1.1"
     },
     "suggest": {
       "m6web/wsclient-bundle": "@stable",
@@ -23,6 +26,5 @@
     },
     "autoload": {
         "psr-0": { "": "src/" }
-    },
-    "minimum-stability" : "dev"
+    }
 }
