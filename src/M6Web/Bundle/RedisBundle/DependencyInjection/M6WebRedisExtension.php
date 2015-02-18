@@ -114,6 +114,9 @@ class M6WebRedisExtension extends Extension
         if (array_key_exists('readwritetimeout', $config)) {
             $configuration['read_write_timeout'] = $config['readwritetimeout'];
         }
+        if (array_key_exists('reconnect', $config)) {
+            $configuration['reconnect'] = $config['reconnect'];
+        }
 
         if ('cache' === $type) {
             // check namespace

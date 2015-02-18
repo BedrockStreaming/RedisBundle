@@ -48,7 +48,9 @@ m6_redis:
         default:
             servers:   ["first"]     # list of servers to use
             namespace: raoul\          # namespace to use
-            timeout:   2               # timeout in second
+            timeout:   2               # timeout in second (float)
+            readwritetimeout: 1.2      # read write timeout in seconds (float)
+            reconnect: 1               # number of reconnection attempt if a redis command fail
         sharded:
             servers: ["first", "second"]
             namespace: raaaoul\
