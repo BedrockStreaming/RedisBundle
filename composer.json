@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "php": ">=5.5",
+        "php": ">=5.4",
         "m6web/redis-component": ">=3.0.1",
         "doctrine/cache":        "~1.3"
     },
