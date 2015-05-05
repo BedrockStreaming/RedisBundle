@@ -11,7 +11,6 @@ see [m6web/redis-component](https://github.com/M6Web/Redis)
 * session handler with redis storage : ```M6Web\Bundle\RedisBundle\Redis\RedisSessionHandler```
 * redis adapter for guzzle cache : ```M6Web\Bundle\RedisBundle\Guzzle\RedisCacheAdapter```
 * dataCollector for sf2 web profiler toolbar
-* cacheResetter option
 
 
 ## usage
