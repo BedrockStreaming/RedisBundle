@@ -19,7 +19,7 @@ see [m6web/redis-component](https://github.com/M6Web/Redis)
 
 in ```config.yml``` for a simple cache service :
 
-```
+```yml
 m6_redis:
     servers:
         default:
@@ -35,7 +35,7 @@ m6_redis:
 
 for a multiple clients :
 
-```
+```yml
 m6_redis:
     servers:
         first:
@@ -60,7 +60,7 @@ m6_redis:
 
 for a direct access to the predis object (without consistant hashing) (```servers``` section remains the same) :
 
-```
+```yml
 m6_redis:
     clients:
         default:
@@ -77,7 +77,7 @@ m6_redis:
 
 ### server configuration via wildcard
 
-```
+```yml
 m6_redis:
     servers:
         server1:
@@ -106,7 +106,7 @@ TODO
 see http://guzzle.readthedocs.org/en/latest/plugins/cache-plugin.html
 
 
-```
+```php
 $ttl         = 20; // 20s ttl - override the ttl guessed by cache-control: max-age
 $adapter     = new M6\Bundle\RedisBundle\Guzzle\RedisCacheAdapter($this->get('m6redis'), $ttl);
 $cachePlugin = new \Guzzle\Plugin\Cache\CachePlugin($adapter);
@@ -123,7 +123,7 @@ Datacollector is available when the Symfony profiler is enabled. The collector a
 
 ### overwriting base class
 
-```
+```yml
 m6_redis:
     clients:
         default:
