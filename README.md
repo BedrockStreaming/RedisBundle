@@ -99,7 +99,32 @@ The event ```M6Web\Bundle\RedisBundle\EventDispatcher``` is automaticly dispatch
 
 ### session handler
 
-TODO
+```
+# app/config/config.yml
+framework:
+  session:
+    # ...
+    handler_id: session.handler.redis
+
+m6_redis:
+  servers:
+    first:
+      ip: 'localhost'
+      port: 6379
+  clients:
+    sessions:
+      servers: ["first"]
+      namespace: sessions\
+      timeout: 1
+
+services:
+  session.handler.redis:
+    class: M6Web\Bundle\RedisBundle\Redis\RedisSessionHandler
+    public:    false
+    arguments:
+      - @m6_redis.sessions
+      - 3600
+```
 
 ### guzzle redis cache adapter
 
