@@ -157,7 +157,6 @@ class M6WebRedisExtension extends Extension
                 throw new InvalidConfigurationException("Invalid client type");
         }
 
-        $definition->setScope(ContainerInterface::SCOPE_CONTAINER);
         $definition->addMethodCall('setEventDispatcher', array(new Reference('event_dispatcher'), 'M6Web\Bundle\RedisBundle\EventDispatcher\RedisEvent'));
 
         $container->setDefinition($serviceId, $definition);
