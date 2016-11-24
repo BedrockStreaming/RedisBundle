@@ -75,7 +75,6 @@ class Configuration implements ConfigurationInterface
                                 ->defaultValue('cache')
                             ->end()
                             ->booleanNode('compress')->defaultFalse()->end()
-                            ->scalarNode('cache_resetter')->end()
                             ->scalarNode('class')->defaultValue('M6Web\Bundle\RedisBundle\Redis\Redis')->end()
                         ->end()
                     ->end()
