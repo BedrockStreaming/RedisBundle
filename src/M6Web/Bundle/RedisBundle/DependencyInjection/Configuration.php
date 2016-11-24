@@ -76,6 +76,7 @@ class Configuration implements ConfigurationInterface
                             ->end()
                             ->booleanNode('compress')->defaultFalse()->end()
                             ->scalarNode('class')->defaultValue('M6Web\Bundle\RedisBundle\Redis\Redis')->end()
+                            ->scalarNode('eventname')->end()
                         ->end()
                     ->end()
                 ->end()

@@ -97,6 +97,15 @@ m6_redis:
 
 The event ```M6Web\Bundle\RedisBundle\EventDispatcher``` is automaticly dispatched to the redis component. Events are fired with the ```redis.command``` label.
 
+You can customize the event name through the client configuration : 
+ 
+ ```yml
+ m6_redis:
+    clients:
+        default:
+            eventname: myEventName
+```            
+
 ### session handler
 
 ```
