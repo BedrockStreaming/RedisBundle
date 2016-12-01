@@ -117,6 +117,9 @@ class M6WebRedisExtension extends Extension
         if (array_key_exists('reconnect', $config)) {
             $configuration['reconnect'] = $config['reconnect'];
         }
+        if (array_key_exists('eventname', $config)) {
+            $configuration['event_name'] = $config['eventname'];
+        }
 
         if ('cache' === $type) {
             // check namespace
