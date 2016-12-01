@@ -122,7 +122,7 @@ services:
     class: M6Web\Bundle\RedisBundle\Redis\RedisSessionHandler
     public:    false
     arguments:
-      - @m6_redis.sessions
+      - '@m6_redis.sessions'
       - 3600
 ```
 
