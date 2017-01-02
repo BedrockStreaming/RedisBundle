@@ -50,6 +50,7 @@ m6_redis:
             timeout:   2               # timeout in second (float)
             readwritetimeout: 1.2      # read write timeout in seconds (float)
             reconnect: 1               # number of reconnection attempt if a redis command fail
+            compress: true             # compress/uncompress data sent/retrieved from redis using gzip
         sharded:
             servers: ["first", "second"]
             namespace: raaaoul\
