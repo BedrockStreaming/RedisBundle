@@ -3,7 +3,7 @@ namespace M6Web\Bundle\RedisBundle\Redis\tests\units;
 
 require_once __DIR__.'/../../../../../../../vendor/autoload.php';
 
-use mageekguy\atoum;
+use M6Web\Bundle\RedisBundle\Tests\Units\AbstractTest;
 use M6Web\Component\Redis\Cache;
 use M6Web\Bundle\RedisBundle\Redis\Redis as BaseRedis;
 use M6Web\Component\RedisMock\RedisMockFactory;
@@ -12,20 +12,8 @@ use M6Web\Component\RedisMock\RedisMockFactory;
 * Test compute last modified date
 *
 */
-class Redis extends atoum\test
+class Redis extends AbstractTest
 {
-    static protected $params = array(
-        'namespace' => '__tt____',
-        'timeout' => 2,
-        'compress' => true,
-        'server_config' => array(
-            'local' => array(
-                'ip' => 'localhost',
-                'port' => 6379,
-            )
-        )
-    );
-
     /**
      * get a redis Instance
      *
@@ -33,12 +21,7 @@ class Redis extends atoum\test
      */
     protected function getRedisInstance()
     {
-        $factory          = new RedisMockFactory();
-        $myRedisMockClass = $factory->getAdapterClass('M6Web\Component\Redis\Cache', true, true);
-        $myRedisMock      = new $myRedisMockClass(static::$params, true);
-        $redis            = new BaseRedis($myRedisMock);
-
-        return $redis;
+        return new BaseRedis($this->getRedisMock());
     }
 
     /**
