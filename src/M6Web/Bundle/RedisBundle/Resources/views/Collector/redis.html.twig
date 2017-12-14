@@ -45,7 +45,7 @@
                 {% set time = command.executiontime %}
                 <td>{{ time }}</td>
                 <td>
-                    {{ command.arguments|join(', ') }}
+                    {{ command.arguments|json_encode }}
                 </td>
             </tr>
         {% endfor %}
