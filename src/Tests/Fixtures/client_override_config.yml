@@ -1,0 +1,18 @@
+m6web_redis:
+    servers:
+        server1:
+            host:   'lolcathost'
+            port: 6379
+            timeout: 2
+            reconnect: 2
+            read_write_timeout: 3
+    clients:
+        default:
+            servers:   ["server1"]     # list of servers to use
+            prefix: raoul\             # namespace to use
+            timeout: 5
+            read_write_timeout: 5
+        foo:
+            servers:   ["server1"]     # list of servers to use
+            prefix: raoul\             # namespace to use
+            read_write_timeout: 5
