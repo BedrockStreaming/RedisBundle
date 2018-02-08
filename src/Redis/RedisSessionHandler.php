@@ -56,7 +56,7 @@ class RedisSessionHandler implements \SessionHandlerInterface
                 // session does not exist, create it empty
                 $this->redis->set($sessionId, '', $this->maxLifetime);
 
-                return null;
+                return '';
             } else {
                 // each read increment lifetime
                 $this->redis->expire($sessionId, $this->maxLifetime);
