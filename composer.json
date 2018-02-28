@@ -22,7 +22,7 @@
         "m6web/php-cs-fixer-config": "^1.0",
         "atoum/atoum":      "@stable",
         "m6web/redis-mock": "@stable",
-        "symfony/symfony": "~2.3|~3.0",
+        "symfony/symfony": "~2.3||~3.0||~4.0",
         "psr/cache": "~1.0"
     },
     "autoload": {

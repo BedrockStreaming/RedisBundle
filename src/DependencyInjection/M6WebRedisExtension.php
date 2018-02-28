@@ -73,6 +73,7 @@ class M6WebRedisExtension extends Extension
         $serviceId = ($clientAlias == 'default') ? 'm6web_redis' : 'm6web_redis.'.$clientAlias;
 
         $definition = new Definition($clientConfig['class']);
+        $definition->setPublic(true);
         $definition->setArguments([$servers, $options]);
         $definition->addMethodCall('setEventDispatcher', [new Reference('event_dispatcher')]);
         $definition->addMethodCall('setEventName', [$clientConfig['eventname']]);
