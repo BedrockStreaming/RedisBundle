@@ -82,7 +82,7 @@ class RedisSessionHandler extends atoum
         ->isIdenticalTo('data');
 
         $this->assert
-        ->variable($s->read('test2'))->isNull()
+        ->variable($s->read('test2'))->isIdenticalTo('')
         ->boolean($s->write('test2', 'toto'))
         ->isIdenticalTo(true)
         ->boolean($s->destroy('test2'))
