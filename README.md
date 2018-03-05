@@ -25,12 +25,13 @@ m6web_redis:
         default:
             host:   'localhost'
             port: 6379
+            reconnect: 1
     clients:
         default:
             servers:   ["default"]     # list of servers to use
             prefix:    raoul\          # prefix to use
             timeout:   2               # timeout in second
-            read_write_timeout: 2        # read-write timeout in second
+            read_write_timeout: 2      # read-write timeout in second
 ```
 
 for a multiple clients :
@@ -41,6 +42,7 @@ m6web_redis:
         first:
             host:   'localhost'
             port: 6379
+            reconnect: 1
         second:
             host:   'xxxxxxxx'
     clients:
@@ -49,7 +51,6 @@ m6web_redis:
             prefix: raoul\           # prefix to use
             timeout:   2             # timeout in second (float)
             read_write_timeout: 1.2  # read write timeout in seconds (float)
-            reconnect: 1             # number of reconnection attempt if a redis command fail, only for tcp
             compress: true           # compress/uncompress data sent/retrieved from redis using gzip, only method SET, SETEX, SETNX and GET are supported
         sharded:
             servers: ["first", "second"]
