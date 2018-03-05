@@ -33,6 +33,10 @@ class RedisDataCollector extends DataCollector
     {
     }
 
+    public function reset()
+    {
+    }
+    
     /**
      * Listen for redis command event
      *
