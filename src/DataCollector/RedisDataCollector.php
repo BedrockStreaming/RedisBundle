@@ -33,7 +33,8 @@ class RedisDataCollector extends DataCollector
     {
     }
 
-    public function reset() {
+    public function reset()
+    {
         $this->data = [
             'redis' => new \SplQueue(),
         ];
