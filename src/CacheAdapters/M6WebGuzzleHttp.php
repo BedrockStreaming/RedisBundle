@@ -12,7 +12,7 @@ use M6Web\Bundle\GuzzleHttpBundle\Cache\CacheInterface;
  */
 class M6WebGuzzleHttp extends RedisClient implements CacheInterface
 {
-    public function set($key, $value, $ttl = null): bool
+    public function set($key, $value, $ttl = null)
     {
         if (null !== $ttl) {
             return $this->setex($key, $ttl, $value);
