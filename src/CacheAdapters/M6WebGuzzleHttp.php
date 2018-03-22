@@ -14,8 +14,8 @@ class M6WebGuzzleHttp extends RedisClient implements CacheInterface
 {
     public function set($key, $value, $ttl = null)
     {
-        if (null !== $ttl) {
-            return $this->setex($key, $ttl, $value);
+        if ($ttl) {
+            return parent::setex($key, $ttl, $value);
         }
 
         return parent::set($key, $value);
@@ -26,7 +26,7 @@ class M6WebGuzzleHttp extends RedisClient implements CacheInterface
         return parent::get($key);
     }
 
-    public function ttl($key): int
+    public function ttl($key)
     {
         return parent::ttl($key);
     }
