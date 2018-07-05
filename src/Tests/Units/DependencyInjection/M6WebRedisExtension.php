@@ -71,15 +71,15 @@ class M6WebRedisExtension extends atoum\test
                 ->object($serviceRedis = $this->container->get('m6web_redis'))
                     ->isInstanceOf('M6Web\Bundle\RedisBundle\Redis\RedisClient')
                 ->and()
-                    ->integer($serviceRedis->getConnection()->count())
-                        ->isEqualTo(1)
-                    ->string((string) $serviceRedis->getConnection()->getIterator()['server1'])
-                        ->isEqualTo('lolcathost:6379')
+                    ->object($serviceRedis->getConnection())
+                        ->isInstanceOf('M6Web\Bundle\RedisBundle\Connection\StreamConnection')
+                    ->string((string) $serviceRedis->getConnection()->getParameters()->host)
+                        ->isEqualTo('lolcathost')
                     ->string($serviceRedis->getOptions()->prefix->getPrefix())
                         ->isEqualTo('raoul\\')
-                    ->integer($serviceRedis->getConnection()->getIterator()['server1']->getParameters()->timeout)
+                    ->integer($serviceRedis->getConnection()->getParameters()->timeout)
                         ->isEqualTo(2)
-                    ->string($serviceRedis->getConnection()->getIterator()['server1']->getParameters()->alias)
+                    ->string($serviceRedis->getConnection()->getParameters()->alias)
                         ->isEqualTo('server1');
     }
 
@@ -123,8 +123,8 @@ class M6WebRedisExtension extends atoum\test
 
         $this->if($serviceRedis = $this->container->get('m6web_redis.one'))
             ->then()
-                ->integer($serviceRedis->getConnection()->count())
-                    ->isEqualTo(1)
+                ->object($serviceRedis->getConnection())
+                    ->isInstanceOf('M6Web\Bundle\RedisBundle\Connection\StreamConnection')
                 ->string($serviceRedis->getOptions()->prefix->getPrefix())
                     ->isEqualTo('server1\\');
     }
@@ -144,15 +144,15 @@ class M6WebRedisExtension extends atoum\test
                 ->object($serviceRedis = $this->container->get('m6web_redis'))
                     ->isInstanceOf('M6Web\Bundle\RedisBundle\Redis\RedisClient')
             ->and()
-                ->integer($serviceRedis->getConnection()->count())
-                    ->isEqualTo(1)
-                ->string((string) $serviceRedis->getConnection()->getIterator()['server1'])
-                    ->isEqualTo('lolcathost:6379')
+                ->object($serviceRedis->getConnection())
+                    ->isInstanceOf('M6Web\Bundle\RedisBundle\Connection\StreamConnection')
+                ->string((string) $serviceRedis->getConnection()->getParameters()->host)
+                    ->isEqualTo('lolcathost')
                 ->string($serviceRedis->getOptions()->prefix->getPrefix())
                     ->isEqualTo('raoul\\')
-                ->integer($serviceRedis->getConnection()->getIterator()['server1']->getParameters()->timeout)
+                ->integer($serviceRedis->getConnection()->getParameters()->timeout)
                     ->isEqualTo(2)
-                ->string($serviceRedis->getConnection()->getIterator()['server1']->getParameters()->alias)
+                ->string($serviceRedis->getConnection()->getParameters()->alias)
                     ->isEqualTo('server1');
     }
 
@@ -167,26 +167,26 @@ class M6WebRedisExtension extends atoum\test
                 ->isIdenticalTo(true)
             ->object($serviceRedis = $this->container->get('m6web_redis')) // default client
                 ->isInstanceOf('M6Web\Bundle\RedisBundle\Redis\RedisClient')
-            ->integer($serviceRedis->getConnection()->count())
-                ->isEqualTo(1)
+            ->object($serviceRedis->getConnection())
+                ->isInstanceOf('M6Web\Bundle\RedisBundle\Connection\StreamConnection')
 
-            ->string((string) $serviceRedis->getConnection()->getIterator()['server1'])
-                ->isEqualTo('lolcathost:6379')
-            ->integer($serviceRedis->getConnection()->getIterator()['server1']->getParameters()->timeout)
+            ->string((string) $serviceRedis->getConnection()->getParameters()->host)
+                ->isEqualTo('lolcathost')
+            ->integer($serviceRedis->getConnection()->getParameters()->timeout)
                 ->isEqualTo(5)
-            ->integer($serviceRedis->getConnection()->getIterator()['server1']->getParameters()->read_write_timeout)
+            ->integer($serviceRedis->getConnection()->getParameters()->read_write_timeout)
                 ->isEqualTo(5)
-            ->string($serviceRedis->getConnection()->getIterator()['server1']->getParameters()->alias)
+            ->string($serviceRedis->getConnection()->getParameters()->alias)
                 ->isEqualTo('server1')
 
             ->if($serviceRedis = $this->container->get('m6web_redis.foo'))
-                ->string((string) $serviceRedis->getConnection()->getIterator()['server1'])
-                    ->isEqualTo('lolcathost:6379')
-                ->integer($serviceRedis->getConnection()->getIterator()['server1']->getParameters()->timeout)
+                ->string((string) $serviceRedis->getConnection()->getParameters()->host)
+                    ->isEqualTo('lolcathost')
+                ->integer($serviceRedis->getConnection()->getParameters()->timeout)
                     ->isEqualTo(2)
-                ->integer($serviceRedis->getConnection()->getIterator()['server1']->getParameters()->read_write_timeout)
+                ->integer($serviceRedis->getConnection()->getParameters()->read_write_timeout)
                     ->isEqualTo(5)
-                ->string($serviceRedis->getConnection()->getIterator()['server1']->getParameters()->alias)
+                ->string($serviceRedis->getConnection()->getParameters()->alias)
                     ->isEqualTo('server1')
         ;
     }
