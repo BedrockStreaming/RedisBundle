@@ -74,7 +74,8 @@ class M6WebRedisExtension extends Extension
 
         $definition = new Definition($clientConfig['class']);
         $definition->setPublic(true);
-        $definition->setArguments([$servers, $options]);
+        // to avoid having cluster connection when only one server
+        $definition->setArguments([(count($servers) === 1) ? reset($servers) : $servers, $options]);
         $definition->addMethodCall('setEventDispatcher', [new Reference('event_dispatcher')]);
         $definition->addMethodCall('setEventName', [$clientConfig['eventname']]);
 
