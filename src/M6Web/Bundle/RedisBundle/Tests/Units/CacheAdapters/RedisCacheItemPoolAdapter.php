@@ -26,7 +26,7 @@ class RedisCacheItemPoolAdapter extends AbstractTest
                 $this->testedInstance->save($item)
             )
             ->then
-                ->boolean($this->testedInstance->hasItem('myKey'))
+                ->boolean((bool)$this->testedInstance->hasItem('myKey'))
                     ->isTrue()
                 ->object($item)
                     ->isInstanceof('Psr\Cache\CacheItemInterface')
@@ -34,7 +34,7 @@ class RedisCacheItemPoolAdapter extends AbstractTest
                     ->isEqualTo('myValue')
             ->if($this->testedInstance->deleteItem('myKey'))
             ->then
-                ->boolean($this->testedInstance->hasItem('myKey'))
+                ->boolean((bool)$this->testedInstance->hasItem('myKey'))
                     ->isFalse()
         ;
     }

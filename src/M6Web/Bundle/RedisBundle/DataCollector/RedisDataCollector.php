@@ -15,7 +15,7 @@ class RedisDataCollector extends DataCollector
      */
     public function __construct()
     {
-        $this->data['redis'] = new \SplQueue();
+        $this->reset();
     }
 
     /**
@@ -81,5 +81,15 @@ class RedisDataCollector extends DataCollector
         $totalExecutionTime = $this->getTotalExecutionTime();
 
         return ($totalExecutionTime) ? ($totalExecutionTime / count($this->getCommands()) ) : 0;
+    }
+
+    /**
+     * Reset
+     */
+    public function reset()
+    {
+        $this->data = [
+            'redis' => new \SplQueue()
+        ];
     }
 }
