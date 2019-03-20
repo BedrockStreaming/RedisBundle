@@ -31,6 +31,10 @@ class Configuration implements ConfigurationInterface
     {
         $rootNode
             ->children()
+                ->scalarNode('hash_function')
+                    ->defaultNull()
+                    ->info('The hash_function class fdcn (must implement `\M6Web\Component\Redis\HashFunctionInterface`)')
+                ->end()
                 ->arrayNode('servers')
                     ->isRequired()
                     ->requiresAtLeastOneElement()

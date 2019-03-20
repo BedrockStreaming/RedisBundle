@@ -2,7 +2,6 @@
 
 namespace M6Web\Bundle\RedisBundle\DependencyInjection;
 
-use M6Web\Component\Redis\Cache;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -11,7 +10,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -136,12 +134,19 @@ class M6WebRedisExtension extends Extension
             throw new InvalidConfigurationException(sprintf("no server found for M6Redis client %s", $alias));
         }
 
+        $hashFunction = null;
+        if (array_key_exists('hash_function', $config) &&  $config['hash_function'] !== null) {
+            $hashFunction = new $config['hash_function'];
+        }
+
         switch ($type) {
             case 'cache':
                 $redisCacheId = sprintf('m6_redis.cache.%s', $alias);
                 $container
                     ->register($redisCacheId, 'M6Web\Component\Redis\Cache')
-                    ->addArgument($configuration);
+                    ->addArgument($configuration)
+                    ->addArgument($hashFunction)
+                ;
                 $serviceId  = ($alias == 'default') ? 'm6_redis' : 'm6_redis.'.$alias;
                 $definition = new Definition($config['class']);
                 $definition->addArgument(new Reference($redisCacheId));
@@ -149,12 +154,18 @@ class M6WebRedisExtension extends Extension
             case 'db':
                 $serviceId  = ($alias == 'default') ? 'm6_dbredis' : 'm6_dbredis.'.$alias;
                 $definition = new Definition('M6Web\Component\Redis\DB');
-                $definition->addArgument($configuration);
+                $definition
+                    ->addArgument($configuration)
+                    ->addArgument($hashFunction)
+                ;
                 break;
             case 'multi':
                 $serviceId  = ($alias == 'default') ? 'm6_multiredis' : 'm6_multiredis.'.$alias;
                 $definition = new Definition('M6Web\Component\Redis\Multi');
-                $definition->addArgument($configuration);
+                $definition
+                    ->addArgument($configuration)
+                    ->addArgument($hashFunction)
+                ;
                 break;
             default:
                 throw new InvalidConfigurationException("Invalid client type");

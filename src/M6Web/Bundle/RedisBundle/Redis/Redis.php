@@ -23,8 +23,7 @@ class Redis
      */
     public function __construct(Cache $redis)
     {
-
-        return $this->setRedis($redis);
+        $this->setRedis($redis);
     }
 
     /**

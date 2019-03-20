@@ -21,6 +21,7 @@ in ```config.yml``` for a simple cache service :
 
 ```yml
 m6_redis:
+    hash_function: ~ 
     servers:
         default:
             ip:   'localhost'

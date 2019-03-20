@@ -4,9 +4,7 @@ namespace M6Web\Bundle\RedisBundle\Redis\tests\units;
 require_once __DIR__.'/../../../../../../../vendor/autoload.php';
 
 use M6Web\Bundle\RedisBundle\Tests\Units\AbstractTest;
-use M6Web\Component\Redis\Cache;
 use M6Web\Bundle\RedisBundle\Redis\Redis as BaseRedis;
-use M6Web\Component\RedisMock\RedisMockFactory;
 
 /**
 * Test compute last modified date
