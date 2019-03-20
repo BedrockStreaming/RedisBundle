@@ -1,0 +1,6 @@
+services:
+    m6.hash_function.crc32:
+        class: \M6Web\Component\Redis\HashFunction\Crc32
+
+    m6.hash_function.sha1:
+        class: \M6Web\Component\Redis\HashFunction\Sha1

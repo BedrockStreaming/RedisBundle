@@ -43,8 +43,9 @@ class M6WebRedisExtension extends Extension
             }
         }
 
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('hash_function.yml');
         if ($container->getParameter('kernel.debug')) {
-            $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
             $loader->load('data_collector.yml');
         }
     }
@@ -136,7 +137,7 @@ class M6WebRedisExtension extends Extension
 
         $hashFunction = null;
         if (array_key_exists('hash_function', $config) &&  $config['hash_function'] !== null) {
-            $hashFunction = new $config['hash_function'];
+            $hashFunction = $container->get($config['hash_function']);
         }
 
         switch ($type) {
