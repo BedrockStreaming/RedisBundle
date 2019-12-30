@@ -76,7 +76,7 @@ class RedisDataCollector extends DataCollector
             $time += $value['executiontime'];
 
             return $time;
-        }) ?? 0;
+        }) ?? 0.0;
     }
 
     public function getAvgExecutionTime(): float
