@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace M6Web\Bundle\RedisBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -19,9 +20,9 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
+        $treeBuilder = new TreeBuilder('m6web_redis');
 
-        $rootNode = $treeBuilder->root('m6web_redis');
+        $rootNode = $treeBuilder->getRootNode();
 
         $this->addServersSection($rootNode);
         $this->addClientsSection($rootNode);
@@ -29,7 +30,7 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    private function addServersSection($rootNode)
+    private function addServersSection(ArrayNodeDefinition $rootNode)
     {
         $rootNode
             ->children()
@@ -54,7 +55,7 @@ class Configuration implements ConfigurationInterface
             ->end();
     }
 
-    private function addClientsSection($rootNode)
+    private function addClientsSection(ArrayNodeDefinition $rootNode)
     {
         $rootNode
             ->children()

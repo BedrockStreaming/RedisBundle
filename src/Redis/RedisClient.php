@@ -9,9 +9,6 @@ use Predis\Command\CommandInterface;
 use Symfony\Component\EventDispatcher;
 use M6Web\Bundle\RedisBundle\EventDispatcher\RedisEvent;
 
-/**
- * Class RedisClient
- */
 class RedisClient extends PredisClient
 {
     const DEFAULT_EVENT = 'redis.command';
