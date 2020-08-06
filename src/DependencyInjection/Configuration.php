@@ -22,12 +22,16 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder('m6web_redis');
 
-        $rootNode = $treeBuilder->getRootNode();
+        if (method_exists($treeBuilder, 'getRootNode')) {
+            $root = $treeBuilder->getRootNode()->children();
+        } else {
+            $root = $treeBuilder->root('m6web_redis')->children();
+        }
 
-        $this->addServersSection($rootNode);
-        $this->addClientsSection($rootNode);
+        $this->addServersSection($root);
+        $this->addClientsSection($root);
 
-        return $treeBuilder;
+        return $root;
     }
 
     private function addServersSection(ArrayNodeDefinition $rootNode)
