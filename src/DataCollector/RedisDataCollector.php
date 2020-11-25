@@ -72,11 +72,13 @@ class RedisDataCollector extends DataCollector
 
     public function getTotalExecutionTime(): float
     {
-        return array_reduce(iterator_to_array($this->getCommands()), function ($time, $value) {
+        $result = array_reduce(iterator_to_array($this->getCommands()), function ($time, $value) {
             $time += $value['executiontime'];
 
             return $time;
         });
+
+        return $result ?? 0;
     }
 
     public function getAvgExecutionTime(): float
