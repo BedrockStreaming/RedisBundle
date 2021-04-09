@@ -1,7 +1,7 @@
 {
     "name": "m6web/redis-bundle",
     "type": "symfony-bundle",
-    "description" : "bundle sf2 on top of predis",
+    "description" : "bundle sf on top of predis",
     "authors": [
         {
             "name": "Olivier Mansour",
