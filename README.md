@@ -1,13 +1,13 @@
 # RedisBundle [![Build Status](https://travis-ci.org/M6Web/RedisBundle.png?branch=master)](https://travis-ci.org/M6Web/RedisBundle)
 
-symfony2 Bundle on top of predis
+symfony Bundle on top of predis
 
 see [predis/predis](https://github.com/nrk/predis)
 
 ## features
 
 * semantic configuration
-* sf2 event dispatcher integration
+* sf event dispatcher integration
 * session handler with redis storage : ```M6Web\Bundle\RedisBundle\Redis\RedisSessionHandler```
 * redis adapter for guzzle cache : ```M6Web\Bundle\RedisBundle\Guzzle\RedisCacheAdapter```
 * dataCollector for sf2 web profiler toolbar
