@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace M6Web\Bundle\RedisBundle\EventDispatcher;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Redis event
