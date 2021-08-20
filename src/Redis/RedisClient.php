@@ -6,8 +6,9 @@ namespace M6Web\Bundle\RedisBundle\Redis;
 
 use Predis\Client as PredisClient;
 use Predis\Command\CommandInterface;
-use Symfony\Component\EventDispatcher;
 use M6Web\Bundle\RedisBundle\EventDispatcher\RedisEvent;
+use Predis\Profile\Factory;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class RedisClient extends PredisClient
 {
@@ -16,7 +17,7 @@ class RedisClient extends PredisClient
     /**
      * event dispatcher
      *
-     * @var EventDispatcher
+     * @var EventDispatcherInterface
      */
     protected $eventDispatcher = null;
 
@@ -30,17 +31,17 @@ class RedisClient extends PredisClient
     /**
      * eventName to be dispatched
      *
-     * @var array
+     * @var string
      */
     protected $eventName;
 
     public function __construct($parameters, $options)
     {
-        \Predis\Profile\Factory::define('compression', 'M6Web\Bundle\RedisBundle\Profile\CompressionProfile');
+        Factory::define('compression', 'M6Web\Bundle\RedisBundle\Profile\CompressionProfile');
         parent::__construct($parameters, $options);
     }
 
-    public function setEventDispatcher(EventDispatcher\EventDispatcherInterface $eventDispacher): self
+    public function setEventDispatcher(EventDispatcherInterface $eventDispacher): self
     {
         $this->eventDispatcher = $eventDispacher;
 
@@ -73,9 +74,9 @@ class RedisClient extends PredisClient
             $event->setCommand($command->getId());
             $event->setExecutionTime($time);
             $event->setArguments($command->getArguments());
-            $this->eventDispatcher->dispatch(self::DEFAULT_EVENT, $event);
+            $this->eventDispatcher->dispatch($event,self::DEFAULT_EVENT);
             if (!is_null($this->eventName)) {
-                $this->eventDispatcher->dispatch($this->eventName, $event);
+                $this->eventDispatcher->dispatch($event, $this->eventName);
             }
         }
 
