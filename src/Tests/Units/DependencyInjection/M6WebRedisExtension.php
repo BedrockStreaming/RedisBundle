@@ -28,7 +28,7 @@ class M6WebRedisExtension extends atoum\test
         $this->extension = new BaseM6WebRedisExtension();
 
         $this->container = new ContainerBuilder();
-        $this->container->register('event_dispatcher', new EventDispatcher());
+        $this->container->register('event_dispatcher', EventDispatcher::class);
         $this->container->registerExtension($this->extension);
         $this->container->setParameter('kernel.debug', true);
     }

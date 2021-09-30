@@ -31,16 +31,43 @@ class RedisCacheItemPoolAdapter extends AbstractTest
                 $this->testedInstance->save($item)
             )
             ->then
-                ->boolean($this->testedInstance->hasItem('myKey'))
-                    ->isTrue()
+                ->integer($this->testedInstance->hasItem('myKey'))
+                    ->isEqualTo(1)
                 ->object($item)
                     ->isInstanceof('Psr\Cache\CacheItemInterface')
                 ->string($item->get())
                     ->isEqualTo('myValue')
             ->if($this->testedInstance->deleteItem('myKey'))
             ->then
-                ->boolean($this->testedInstance->hasItem('myKey'))
-                    ->isFalse()
+                ->integer($this->testedInstance->hasItem('myKey'))
+                    ->isEqualTo(0)
+        ;
+    }
+
+
+    public function testExpirableItem()
+    {
+        $this
+            ->given(
+                $this->newTestedInstance('tcp://127.0.0.1', [
+                    'connections' => ['tcp' => '\M6Web\Bundle\RedisBundle\Tests\Units\Mock\StreamConnectionMock'],
+                ]),
+                $item = $this->testedInstance->getItem('myKey'),
+                $item->set('myExpirableValue'),
+                $item->expiresAt(new \DateTime('+10 milliseconds')),
+                $this->testedInstance->save($item)
+            )
+            ->then
+                ->integer($this->testedInstance->hasItem('myKey'))
+                    ->isEqualTo(1)
+                ->object($item)
+                    ->isInstanceof('Psr\Cache\CacheItemInterface')
+                ->string($item->get())
+                    ->isEqualTo('myExpirableValue')
+            ->if(sleep(1))
+            ->then
+                ->integer($this->testedInstance->hasItem('myKey'))
+                    ->isEqualTo(0)
         ;
     }
 }
