@@ -55,7 +55,11 @@ class RedisCacheItemPoolAdapter extends RedisClient implements CacheItemPoolInte
 
         $this->getItemLifeTime = \Closure::bind(
             function (CacheItem $item) {
-                return $item->expiry;
+                if ($item->expiry === null) {
+                    return null;
+                }
+
+                return (int) (($item->expiry - microtime(true)) * 1000);
             },
             null,
             CacheItem::class
@@ -126,7 +130,12 @@ class RedisCacheItemPoolAdapter extends RedisClient implements CacheItemPoolInte
      */
     public function save(CacheItemInterface $item)
     {
-        return $this->set($item->getKey(), serialize($item->get()), ($this->getItemLifeTime)($item));
+        $ttl = ($this->getItemLifeTime)($item);
+        if ($ttl === null) {
+            return $this->set($item->getKey(), serialize($item->get()));
+        }
+
+        return $this->set($item->getKey(), serialize($item->get()), 'px', $ttl);
     }
 
     public function saveDeferred(CacheItemInterface $item): bool
