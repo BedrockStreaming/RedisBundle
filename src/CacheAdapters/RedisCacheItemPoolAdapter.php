@@ -5,28 +5,22 @@ declare(strict_types=1);
 namespace M6Web\Bundle\RedisBundle\CacheAdapters;
 
 use M6Web\Bundle\RedisBundle\Redis\RedisClient;
-use Symfony\Component\Cache\CacheItem;
-use Psr\Cache\CacheItemPoolInterface;
 use Psr\Cache\CacheItemInterface;
+use Psr\Cache\CacheItemPoolInterface;
+use Symfony\Component\Cache\CacheItem;
 
 /**
  * Class RedisCacheItemPoolAdapter
  */
 class RedisCacheItemPoolAdapter extends RedisClient implements CacheItemPoolInterface
 {
-    /**
-     * @var \Closure
-     */
+    /** @var \Closure */
     private $createCacheItem;
 
-    /**
-     * @var \Closure
-     */
+    /** @var \Closure */
     private $getItemLifeTime;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $transactionInProgress = false;
 
     /**
@@ -124,8 +118,6 @@ class RedisCacheItemPoolAdapter extends RedisClient implements CacheItemPoolInte
     }
 
     /**
-     * @param CacheItemInterface $item
-     *
      * @return bool
      */
     public function save(CacheItemInterface $item)

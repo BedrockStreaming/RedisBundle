@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace M6Web\Bundle\RedisBundle\Tests\Units\Redis;
 
-use mageekguy\atoum;
-use M6Web\Component\RedisMock\RedisMockFactory;
-use M6Web\Bundle\RedisBundle\Redis\RedisSessionHandler as BaseRedisSessionHandler;
 use M6Web\Bundle\RedisBundle\Redis\RedisClient as BaseRedis;
+use M6Web\Bundle\RedisBundle\Redis\RedisSessionHandler as BaseRedisSessionHandler;
+use M6Web\Component\RedisMock\RedisMockFactory;
+use mageekguy\atoum;
 
 /**
  * Class RedisSessionHandler

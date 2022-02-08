@@ -22,8 +22,6 @@ class RedisSessionHandler implements \SessionHandlerInterface
 
     /**
      * getter for the redis object
-     *
-     * @return ClientInterface
      */
     public function getRedis(): ClientInterface
     {

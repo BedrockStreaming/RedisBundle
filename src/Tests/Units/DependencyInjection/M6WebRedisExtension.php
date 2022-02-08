@@ -4,23 +4,19 @@ declare(strict_types=1);
 
 namespace M6Web\Bundle\RedisBundle\Tests\Units\DependencyInjection;
 
+use M6Web\Bundle\RedisBundle\DependencyInjection\M6WebRedisExtension as BaseM6WebRedisExtension;
 use mageekguy\atoum;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use M6Web\Bundle\RedisBundle\DependencyInjection\M6WebRedisExtension as BaseM6WebRedisExtension;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class M6WebRedisExtension extends atoum\test
 {
-    /**
-     * @var BaseM6WebRedisExtension
-     */
+    /** @var BaseM6WebRedisExtension */
     protected $extension;
 
-    /**
-     * @var ContainerBuilder
-     */
+    /** @var ContainerBuilder */
     protected $container;
 
     protected function initContainer()
@@ -34,8 +30,7 @@ class M6WebRedisExtension extends atoum\test
     }
 
     /**
-     * @param ContainerBuilder $container
-     * @param                  $resource
+     * @param $resource
      */
     protected function loadConfiguration(ContainerBuilder $container, $resource)
     {

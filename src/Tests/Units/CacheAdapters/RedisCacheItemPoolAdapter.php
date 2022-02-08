@@ -44,7 +44,6 @@ class RedisCacheItemPoolAdapter extends AbstractTest
         ;
     }
 
-
     public function testExpirableItem()
     {
         $this

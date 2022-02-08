@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace M6Web\Bundle\RedisBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -87,8 +87,6 @@ class M6WebRedisExtension extends Extension
      * @param array  $clientServers array of servers defined for a client
      * @param string $clientAlias   alias of the client
      *
-     * @return array
-     *
      * @throws \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      */
     protected function getServers(array $servers, array $clientServers, string $clientAlias): array
@@ -133,8 +131,6 @@ class M6WebRedisExtension extends Extension
      * select an alias for the extension
      *
      * trick allowing bypassing the Bundle::getContainerExtension check on getAlias
-     *
-     * @return string
      */
     public function getAlias(): string
     {

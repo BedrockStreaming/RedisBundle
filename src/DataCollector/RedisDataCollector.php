@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace M6Web\Bundle\RedisBundle\DataCollector;
 
-use Symfony\Component\HttpKernel\DataCollector\DataCollector;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
 use M6Web\Bundle\RedisBundle\EventDispatcher\RedisEvent;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 /**
  * Handle datacollector for redis
@@ -25,8 +25,8 @@ class RedisDataCollector extends DataCollector
     /**
      * Collect the data
      *
-     * @param Request $request The request object
-     * @param Response $response The response object
+     * @param Request         $request   The request object
+     * @param Response        $response  The response object
      * @param \Throwable|null $exception An exception
      */
     public function collect(Request $request, Response $response, ?\Throwable $exception = null)

@@ -11,9 +11,7 @@ use Predis\Connection\ParametersInterface;
 
 class StreamConnectionMock extends \Predis\Connection\StreamConnection
 {
-    /**
-     * @var RedisMock
-     */
+    /** @var RedisMock */
     protected $redisMock;
 
     /**

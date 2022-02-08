@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace M6Web\Bundle\RedisBundle\CacheAdapters;
 
-use M6Web\Bundle\RedisBundle\Redis\RedisClient;
 use M6Web\Bundle\GuzzleHttpBundle\Cache\CacheInterface;
+use M6Web\Bundle\RedisBundle\Redis\RedisClient;
 
 /**
  * Redis cache adapter for M6WebGuzzleHttp client
