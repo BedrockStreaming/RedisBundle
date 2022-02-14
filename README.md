@@ -51,7 +51,7 @@ m6web_redis:
             prefix: raoul\           # prefix to use
             timeout:   2             # timeout in second (float)
             read_write_timeout: 1.2  # read write timeout in seconds (float)
-            compress: true           # compress/uncompress data sent/retrieved from redis using gzip, only method SET, SETEX, SETNX and GET are supported
+            compress: true           # compress/uncompress data sent/retrieved from redis using gzip, only method SET, SETEX, SETNX, GET, MGET and MSET are supported
         sharded:
             servers: ["first", "second"]
             prefix: raaaoul\
