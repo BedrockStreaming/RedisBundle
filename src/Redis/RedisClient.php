@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace M6Web\Bundle\RedisBundle\Redis;
 
+use M6Web\Bundle\RedisBundle\EventDispatcher\RedisEvent;
 use Predis\Client as PredisClient;
 use Predis\Command\CommandInterface;
-use M6Web\Bundle\RedisBundle\EventDispatcher\RedisEvent;
 use Predis\Profile\Factory;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -74,7 +74,7 @@ class RedisClient extends PredisClient
             $event->setCommand($command->getId());
             $event->setExecutionTime($time);
             $event->setArguments($command->getArguments());
-            $this->eventDispatcher->dispatch($event,self::DEFAULT_EVENT);
+            $this->eventDispatcher->dispatch($event, self::DEFAULT_EVENT);
             if (!is_null($this->eventName)) {
                 $this->eventDispatcher->dispatch($event, $this->eventName);
             }

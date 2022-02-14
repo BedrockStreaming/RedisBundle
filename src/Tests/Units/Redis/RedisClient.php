@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace M6Web\Bundle\RedisBundle\Tests\Units\Redis;
 
 use M6Web\Bundle\RedisBundle\Tests\Units\AbstractTest;
+use M6Web\Bundle\RedisBundle\Tests\Units\Mock\StreamConnectionMock;
 
 /**
  * Test compute last modified date
@@ -19,7 +20,7 @@ class RedisClient extends AbstractTest
     public function testDecoratorCalls($srcMethod, $srcArgs)
     {
         $redisClient = $this->newTestedInstance('tcp://127.0.0.1', [
-            'connections' => ['tcp' => '\M6Web\Bundle\RedisBundle\Tests\Units\Mock\StreamConnectionMock'],
+            'connections' => ['tcp' => StreamConnectionMock::class],
         ]);
         $redisClient->setEventDispatcher($eventDispatcher = $this->getEventDispatcherMock());
         $this
@@ -39,13 +40,15 @@ class RedisClient extends AbstractTest
             ['set',    ['foo', 'bar']],
             ['ttl',    ['foo']],
             ['del',    ['raoul']],
+            ['mget',   [[['foo', 'bar']]]],
+            ['mset',   [['foo' => 'fighters'], ['bar' => 'baz']]],
         ];
     }
 
     protected function getEventDispatcherMock()
     {
         $mock = new \Mock\Symfony\Component\EventDispatcher\EventDispatcher();
-        $mock->getMockController()->dispatch = function(): object { return new \StdClass; };
+        $mock->getMockController()->dispatch = function (): object { return new \StdClass(); };
 
         return $mock;
     }

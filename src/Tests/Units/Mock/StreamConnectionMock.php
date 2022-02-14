@@ -11,9 +11,7 @@ use Predis\Connection\ParametersInterface;
 
 class StreamConnectionMock extends \Predis\Connection\StreamConnection
 {
-    /**
-     * @var RedisMock
-     */
+    /** @var RedisMock */
     protected $redisMock;
 
     /**
@@ -32,7 +30,7 @@ class StreamConnectionMock extends \Predis\Connection\StreamConnection
     {
         $methodName = strtolower($command->getId());
 
-        if (!method_exists('M6Web\Component\RedisMock\RedisMock', $methodName)) {
+        if (!method_exists(RedisMock::class, $methodName)) {
             throw new UnsupportedException(sprintf('Redis command `%s` is not supported by RedisMock.', $methodName));
         }
 
