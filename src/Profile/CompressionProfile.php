@@ -12,6 +12,7 @@ use B1rdex\PredisCompressible\Command\StringSetMultiple;
 use B1rdex\PredisCompressible\Command\StringSetPreserve;
 use B1rdex\PredisCompressible\Compressor\GzipCompressor;
 use B1rdex\PredisCompressible\CompressProcessor;
+use Predis\Command\KeyDelete;
 use Predis\Profile\RedisProfile;
 
 class CompressionProfile extends RedisProfile
@@ -39,6 +40,7 @@ class CompressionProfile extends RedisProfile
             'GET' => StringGet::class,
             'MSET' => StringSetMultiple::class,
             'MGET' => StringGetMultiple::class,
+            'DEL' => KeyDelete::class,
         ];
     }
 

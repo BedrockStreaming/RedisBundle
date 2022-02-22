@@ -42,6 +42,7 @@ class RedisClient extends AbstractTest
             ['del',    ['raoul']],
             ['mget',   [[['foo', 'bar']]]],
             ['mset',   [['foo' => 'fighters'], ['bar' => 'baz']]],
+            ['del',   ['foo']],
         ];
     }
 
