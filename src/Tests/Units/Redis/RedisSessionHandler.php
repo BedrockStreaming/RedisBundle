@@ -6,13 +6,13 @@ namespace M6Web\Bundle\RedisBundle\Tests\Units\Redis;
 
 use M6Web\Bundle\RedisBundle\Redis\RedisClient as BaseRedis;
 use M6Web\Bundle\RedisBundle\Redis\RedisSessionHandler as BaseRedisSessionHandler;
+use M6Web\Bundle\RedisBundle\Tests\Units\AbstractTest;
 use M6Web\Component\RedisMock\RedisMockFactory;
-use mageekguy\atoum;
 
 /**
  * Class RedisSessionHandler
  */
-class RedisSessionHandler extends atoum
+class RedisSessionHandler extends AbstractTest
 {
     /**
      * get a Redis instance
@@ -61,8 +61,8 @@ class RedisSessionHandler extends atoum
         $this->assert
         ->boolean($s->open('test', 'test'))
         ->isIdenticalTo(true)
-        ->boolean($s->gc(10))
-        ->isIdenticalTo(true)
+        ->integer($s->gc(10))
+        ->isIdenticalTo(1)
         ->boolean($s->close())
         ->isIdenticalTo(true);
     }
@@ -82,12 +82,12 @@ class RedisSessionHandler extends atoum
         ->isIdenticalTo('data');
 
         $this->assert
-        ->variable($s->read('test2'))->isNull()
+        ->variable($s->read('test2'))->isEqualTo(false)
         ->boolean($s->write('test2', 'toto'))
         ->isIdenticalTo(true)
         ->boolean($s->destroy('test2'))
         ->isIdenticalTo(true)
-        ->variable($s->read('test2'))->isNull();
+        ->variable($s->read('test2'))->isEqualTo(false);
 
         $this->assert
         ->boolean($s->destroy('raoul'))

@@ -47,20 +47,19 @@ class RedisSessionHandler implements \SessionHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function read($sessionId)
+    public function read($sessionId): string|false
     {
         try {
             if (!$this->redis->exists($sessionId)) {
                 // session does not exist, create it empty
                 $this->redis->set($sessionId, '', $this->maxLifetime);
 
-                return null;
-            } else {
-                // each read increment lifetime
-                $this->redis->expire($sessionId, $this->maxLifetime);
-
-                return $this->redis->get($sessionId);
+                return false;
             }
+            // each read increment lifetime
+            $this->redis->expire($sessionId, $this->maxLifetime);
+
+            return $this->redis->get($sessionId);
         } catch (\M6Web\Component\Redis\Exception $e) {
             throw new \RuntimeException('Error reading session : '.$e);
         }
@@ -95,8 +94,8 @@ class RedisSessionHandler implements \SessionHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function gc($lifetime): bool
+    public function gc($lifetime): int|false
     {
-        return true;
+        return 1;
     }
 }

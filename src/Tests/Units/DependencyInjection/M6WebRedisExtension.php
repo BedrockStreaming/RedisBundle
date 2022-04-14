@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace M6Web\Bundle\RedisBundle\Tests\Units\DependencyInjection;
 
 use M6Web\Bundle\RedisBundle\DependencyInjection\M6WebRedisExtension as BaseM6WebRedisExtension;
-use mageekguy\atoum;
+use M6Web\Bundle\RedisBundle\Tests\Units\AbstractTest;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-class M6WebRedisExtension extends atoum\test
+class M6WebRedisExtension extends AbstractTest
 {
     /** @var BaseM6WebRedisExtension */
     protected $extension;
