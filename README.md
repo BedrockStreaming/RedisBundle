@@ -1,8 +1,10 @@
-# RedisBundle [![Build Status](https://travis-ci.org/M6Web/RedisBundle.png?branch=master)](https://travis-ci.org/M6Web/RedisBundle)
+# RedisBundle
+
+[![Build Status](https://github.com/BedrockStreaming/RedisBundle/actions/workflows/ci.yml/badge.svg)](https://github.com/BedrockStreaming/RedisBundle/actions/workflows/ci.yml) [![Latest Stable Version](http://poser.pugx.org/m6web/redis-bundle/v)](https://packagist.org/packages/m6web/redis-bundle) [![Total Downloads](http://poser.pugx.org/m6web/redis-bundle/downloads)](https://packagist.org/packages/m6web/redis-bundle) [![License](http://poser.pugx.org/m6web/redis-bundle/license)](https://packagist.org/packages/m6web/redis-bundle) [![PHP Version Require](http://poser.pugx.org/m6web/redis-bundle/require/php)](https://packagist.org/packages/m6web/redis-bundle)
 
 symfony Bundle on top of predis
 
-see [predis/predis](https://github.com/nrk/predis)
+see [predis/predis](https://github.com/predis/predis)
 
 ## features
 
