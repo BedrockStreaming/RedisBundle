@@ -119,7 +119,7 @@ class M6WebRedisExtension extends Extension
         }
 
         foreach ($serverToAdd as $alias => $server) {
-            //format the array according to predis client need
+            // format the array according to predis client need
             $server['alias'] = $alias;
             $toReturn[] = $server;
         }

@@ -49,7 +49,7 @@ class RedisClient extends AbstractTest
     protected function getEventDispatcherMock()
     {
         $mock = new \Mock\Symfony\Component\EventDispatcher\EventDispatcher();
-        $mock->getMockController()->dispatch = function (): object { return new \StdClass(); };
+        $mock->getMockController()->dispatch = function (): object { return new \stdClass(); };
 
         return $mock;
     }

@@ -1,0 +1,24 @@
+name: Continuous Integration
+on: [push, pull_request]
+
+jobs:
+    tests:
+        name: make ci
+        runs-on: ubuntu-20.04
+        strategy:
+            matrix:
+                php_version:
+                    - '7.4'
+                composer_flags:
+                    - ''
+                    - '--prefer-lowest'
+            fail-fast: false
+        steps:
+            - uses: actions/checkout@master
+            - uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php_version }}
+                  coverage: xdebug2
+            - run: composer update --prefer-dist --no-interaction ${{ matrix.composer_flags }}
+            - run: bin/php-cs-fixer fix --ansi --dry-run --using-cache=no --verbose
+            - run: bin/atoum
