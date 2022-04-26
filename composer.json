@@ -19,12 +19,11 @@
         "b1rdex/predis-compressible": "^0.5.0"
     },
     "require-dev": {
-        "m6web/php-cs-fixer-config": "^1.0",
+        "m6web/php-cs-fixer-config": "2.0.*",
         "atoum/atoum": "^3.3.0",
         "atoum/atoum-bundle": "^2.0",
         "atoum/stubs": "~2.5",
-
-        "m6web/redis-mock": "@stable",
+        "m6web/redis-mock": "5.2.*",
         "symfony/symfony": "~5.0",
         "psr/cache": "~1.0"
     },

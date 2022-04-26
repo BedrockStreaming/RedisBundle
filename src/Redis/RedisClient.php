@@ -12,7 +12,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class RedisClient extends PredisClient
 {
-    const DEFAULT_EVENT = 'redis.command';
+    public const DEFAULT_EVENT = 'redis.command';
 
     /**
      * event dispatcher
