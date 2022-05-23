@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace M6Web\Bundle\RedisBundle;
 
+use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -17,7 +18,7 @@ class M6WebRedisBundle extends Bundle
      *
      * @return object DependencyInjection\M6WebStatsdExtension
      */
-    public function getContainerExtension()
+    public function getContainerExtension(): ?ExtensionInterface
     {
         return new DependencyInjection\M6WebRedisExtension();
     }
